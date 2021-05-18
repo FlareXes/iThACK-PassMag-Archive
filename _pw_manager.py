@@ -1,4 +1,4 @@
-from _pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword, backup, cloudBackup
+from _pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword, backup, cloudBackup, exportEntriesCsv
 from User._local_backup import restore
 from _db_manager import showWebsites
 from _Authenticate import checkTrust
@@ -41,7 +41,8 @@ while True:
             exit()
         else:
             pass
-    
+    elif choice == '7':
+        exportEntriesCsv()
     elif choice == 'Q' or choice == 'q':
         exit()
     else:

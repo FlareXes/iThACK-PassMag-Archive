@@ -1,6 +1,7 @@
 from User._user_db import connect_database
 from prettytable import PrettyTable
 from User._data_encryption import encryptPassword, decryptPassword
+import pandas as pd
 
 def storePassword(web_name, url, username, email, password, description):
     sqlQuery = "INSERT INTO UserDataBase (Website, URL, Username, Email, Password, Description) VALUES (?, ?, ?, ?, ?, ?)"
@@ -10,6 +11,7 @@ def storePassword(web_name, url, username, email, password, description):
     mycursor = connection.cursor()
     mycursor.execute(sqlQuery, val)
     connection.commit()
+    connection.close()
     print("\n[+] record inserted.")
 
     last_entry_id = mycursor.lastrowid
@@ -27,6 +29,7 @@ def deletePassword(acc_Id):
     mycursor.execute(sqlQuery_1, accIdToDelete)
     mycursor.execute(sqlQuery_2, accIdToDelete)
     connection.commit()
+    connection.close()
     print("\n[-] record deleted")
 
 
@@ -73,6 +76,7 @@ def storeEncryptionComponents(entryID, encryptionComponents):
     mycursor = connection.cursor()
     mycursor.execute(sqlQuery, val)
     connection.commit()
+    connection.close()
 
 
 def updateDatabaseWithNewMasterPassword(masterPassword, newMasterPassword):
@@ -114,4 +118,32 @@ def updateDatabaseWithNewMasterPassword(masterPassword, newMasterPassword):
         mycursor.execute(sqlQuery, val)
         connection.commit()
 
+    connection.close()
+
+
+def exportPasswords():
+    connection = connect_database()
+    mycursor = connection.cursor()
+    sqlQuery_1 = "SELECT ID, Website, URL, Username, Email, Password, Description FROM UserDataBase"
+    mycursor.execute(sqlQuery_1)
+    rows_1 = mycursor.fetchall()
+
+    sqlQuery_2 = "SELECT Encryption FROM UserDataBase_Encryption"
+    mycursor.execute(sqlQuery_2)
+    rows_2 = mycursor.fetchall()
+
+    ExportEntries = []
+    for i in range(0, len(rows_2)):
+        encryptionComponents = rows_1[i][5]+str(rows_2[i][0])
+        cipher_text = encryptionComponents[:-168]
+        salt = encryptionComponents[-168:-48]
+        nonce = encryptionComponents[-48:-24]
+        tag = encryptionComponents[-24:]
+        decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, "plz").decode('utf-8')
+        rowList = list(rows_1[i])
+        rowList[5] = decryptedPassword
+        ExportEntries.append(tuple(rowList))
+
+    df = pd.DataFrame(ExportEntries, columns=["ID", "Website", "URL", "Username", "Email", "Password", "Description"])
+    df.to_csv("export.csv", index=False)
     connection.close()
