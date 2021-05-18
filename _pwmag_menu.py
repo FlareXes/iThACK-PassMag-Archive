@@ -1,4 +1,4 @@
-from _db_manager import storePassword, deletePassword, showWebsites, storeEncryptionComponents, getPasswordComponents, updateDatabaseWithNewMasterPassword
+from _db_manager import storePassword, deletePassword, showWebsites, storeEncryptionComponents, getPasswordComponents, updateDatabaseWithNewMasterPassword, exportPasswords
 from User._master_encryption import passwordHasher
 from _Authenticate import checkTrust, verifyMasterPassword
 from User._data_encryption import encryptPassword, decryptPassword
@@ -17,6 +17,7 @@ def menu():
         4. View existing details password
         5. Change Master Password
         6. Backup
+        7. Export Passwords Into CSV
         Q. Exit
         ''')
     return input("    : ")
@@ -32,26 +33,6 @@ def backupMenu():
     Q. Go Back
     ''')
     return input("    : ")
-
-
-def backup():
-    backup_Database_And_Config()
-    with open("config.json", "r+") as config_file:
-        isAutoBackupAllowed = json.load(config_file)
-        isAutoBackupAllowed['Automatic Backup'] = True
-        config_file.seek(0)
-        json.dump(isAutoBackupAllowed, config_file)
-        config_file.truncate()
-
-
-def cloudBackup():
-    backup_Database_And_Config_On_Cloud()
-    with open("config.json", "r+") as config_file:
-        isAutoBackupAllowed = json.load(config_file)
-        isAutoBackupAllowed['Automatic Cloud Backup'] = True
-        config_file.seek(0)
-        json.dump(isAutoBackupAllowed, config_file)
-        config_file.truncate()
 
 
 def addEntry():
@@ -159,3 +140,40 @@ def changeMasterPassword():
     updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
     passwordHasher(newMasterPassword)
     print("\nPassword Has Changed Successfully ✔🤞")
+
+
+def backup():
+    backup_Database_And_Config()
+    with open("config.json", "r+") as config_file:
+        isAutoBackupAllowed = json.load(config_file)
+        isAutoBackupAllowed['Automatic Backup'] = True
+        config_file.seek(0)
+        json.dump(isAutoBackupAllowed, config_file)
+        config_file.truncate()
+
+
+def cloudBackup():
+    backup_Database_And_Config_On_Cloud()
+    with open("config.json", "r+") as config_file:
+        isAutoBackupAllowed = json.load(config_file)
+        isAutoBackupAllowed['Automatic Cloud Backup'] = True
+        config_file.seek(0)
+        json.dump(isAutoBackupAllowed, config_file)
+        config_file.truncate()
+
+
+def exportEntriesCsv():
+    masterPasswordAttempt = 0
+    while masterPasswordAttempt <= 2:
+        masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
+        if verifyMasterPassword(masterPassword) == True:
+            break
+        else:
+            print("\n❌ Nope, Try Again ❌")
+            masterPasswordAttempt += 1
+    else:
+        print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
+        quit()
+
+    exportPasswords()
+    print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
