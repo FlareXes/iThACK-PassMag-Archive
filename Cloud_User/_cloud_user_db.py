@@ -3,7 +3,6 @@ import os
 
 def connect_cloud_server():
     connection = mysql.connector.connect(user="ukjqcvpzl1zyir4e", password="9GwcPYLnFmbynDP43nfg", host="bzgvile1yxwbntvbgrnu-mysql.services.clever-cloud.com", database="bzgvile1yxwbntvbgrnu")
-    # print(connection)
     return connection
 
 

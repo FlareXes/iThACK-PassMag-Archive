@@ -133,15 +133,6 @@ def showPassword():
     pyperclip.copy(decryptedPassword)
 
 
-def changeMasterPassword():
-    print("\nCurrent Password (Verify Yourself) 📌\n")
-    oldMasterPassword = checkTrust()
-    newMasterPassword = input("\n[+] New Enter Master Password: ")
-    updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
-    passwordHasher(newMasterPassword)
-    print("\nPassword Has Changed Successfully ✔🤞")
-
-
 def backup():
     backup_Database_And_Config()
     with open("config.json", "r+") as config_file:
@@ -160,6 +151,20 @@ def cloudBackup():
         config_file.seek(0)
         json.dump(isAutoBackupAllowed, config_file)
         config_file.truncate()
+
+
+def changeMasterPassword():
+    print("\nCurrent Password (Verify Yourself) 📌\n")
+    oldMasterPassword = checkTrust()
+    newMasterPassword = input("\n[+] New Enter Master Password: ")
+    updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
+    passwordHasher(newMasterPassword)
+    if os.path.exists("config.json"):
+        with open("config.json", "r") as config_file:
+            isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
+        if isAutoBackupAllowed == True:
+            backup()
+    print("\nPassword Has Changed Successfully ✔🤞")
 
 
 def exportEntriesCsv():
