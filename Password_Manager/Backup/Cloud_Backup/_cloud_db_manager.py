@@ -1,4 +1,4 @@
-from Cloud_User._cloud_user_db import connect_cloud_server
+from Password_Manager.Backup.Cloud_Backup._cloud_user_db import connect_cloud_server
 
 
 def storePassword(id, web_name, url, username, email, password, description):
@@ -24,9 +24,9 @@ def storeEncryptionComponents(entryID, encryptionComponents):
 
 
 def storeSecretEncryption():
-    with open("User/masterlevel/00003.1.KEY.bin", "rb") as keyFile:
+    with open("Password_Manager/User/masterlevel/00003.1.KEY.bin", "rb") as keyFile:
         key = str(keyFile.read())
-    with open("User/masterlevel/00003.1.SALT.bin", "rb") as saltFile:
+    with open("Password_Manager/User/masterlevel/00003.1.SALT.bin", "rb") as saltFile:
         salt = str(saltFile.read())
 
     sqlQuery = "INSERT IGNORE INTO Secret_Encryption (Identification, KeyFile, SaltFile) VALUES (%s ,%s, %s)"

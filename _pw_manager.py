@@ -1,11 +1,12 @@
-from _pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword, backup, cloudBackup, exportEntriesCsv
-from User._local_backup import restore
-from _db_manager import showWebsites
-from _Authenticate import checkTrust
-from _config_checkup import checkConfigurations
+from Password_Manager._pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword, backup, cloudBackup, exportEntriesCsv, showEntries
+from Password_Manager.Backup.Local_Backup._local_backup import restore
+from Password_Manager.Backup.Cloud_Backup._cloud_backup import cloud_Restore
+from Password_Manager._Authenticate import checkTrust
+from Password_Manager._config_checkup import checkConfigurations
 import json
 
 if __name__ == '__main__':
+    cloud_Restore()
     checkConfigurations()
     checkTrust()
 
@@ -19,7 +20,7 @@ while True:
     elif choice == '3':
         deleteEntry()
     elif choice == '4':
-        showWebsites()
+        showEntries()
     elif choice == '5':
         changeMasterPassword()
     elif choice == '6':

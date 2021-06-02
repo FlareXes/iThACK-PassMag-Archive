@@ -1,10 +1,10 @@
-from Cloud_User._cloud_db_manager import storePassword, storeEncryptionComponents,storeSecretEncryption
-from Cloud_User._cloud_user_db import connect_cloud_server
-from User._user_db import connect_database
+from Password_Manager.Backup.Cloud_Backup._cloud_db_manager import storePassword, storeEncryptionComponents,storeSecretEncryption
+from Password_Manager.Backup.Cloud_Backup._cloud_user_db import connect_cloud_server
+from Password_Manager.User._user_db import connect_database
 import sqlite3
 
 def connect_local_database():
-    connection = sqlite3.connect(r"User/leveldb/user.db")
+    connection = sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
     return connection
 
 

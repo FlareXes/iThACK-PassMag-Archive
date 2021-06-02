@@ -13,10 +13,10 @@ def storeKeySalt(salt, key):
             saltfile.write(key)
     else:
         os.mkdir("User/masterlevel")
-        with open("masterlevel/00003.1.SALT.bin", "wb") as saltfile:
+        with open("User/masterlevel/00003.1.SALT.bin", "wb") as saltfile:
             saltfile.write(salt)
         
-        with open("masterlevel/00003.1.KEY.bin", "wb") as saltfile:
+        with open("User/masterlevel/00003.1.KEY.bin", "wb") as saltfile:
             saltfile.write(key)
 
 
