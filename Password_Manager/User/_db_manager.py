@@ -1,7 +1,8 @@
-from User._user_db import connect_database
+from Password_Manager.User._user_db import connect_database
 from prettytable import PrettyTable
-from User._data_encryption import encryptPassword, decryptPassword
+from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
 import pandas as pd
+
 
 def storePassword(web_name, url, username, email, password, description):
     sqlQuery = "INSERT INTO UserDataBase (Website, URL, Username, Email, Password, Description) VALUES (?, ?, ?, ?, ?, ?)"
@@ -40,13 +41,15 @@ def showWebsites():
     mycursor = connection.cursor()
     mycursor.execute(sqlQuery)
     rows = mycursor.fetchall()
-
+    connection.close()
+    
     myTable = PrettyTable(["ID", "Website", "URL", "Username", "Email", "Description"])
     # Adding Data To Columns
     for row in rows:
         row = list(row)
         myTable.add_row(row)
     print(myTable)
+    return  len(rows)
 
 
 def getPasswordComponents(acc_Id):

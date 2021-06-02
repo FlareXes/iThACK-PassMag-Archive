@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 def create_dbtables():
-    conn = sqlite3.connect(r"User/leveldb/user.db")
+    conn = sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
     cur = conn.cursor()
     cur.execute('''CREATE TABLE IF NOT EXISTS UserDataBase
          (ID                INTEGER          PRIMARY KEY,
@@ -22,17 +22,17 @@ def create_dbtables():
     conn.close()
 
 def create_database():
-    if os.path.exists("User/leveldb"):
-        if not os.path.exists("user.db"):
-            sqlite3.connect(r"User/leveldb/user.db")
+    if os.path.exists("Password_Manager/User/leveldb"):
+        if not os.path.exists("Password_Manager/User/leveldb/user.db"):
+            sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
             create_dbtables()
     else:
-        os.mkdir("User/leveldb")
-        sqlite3.connect(r"User/leveldb/user.db")
+        os.mkdir("Password_Manager/User/leveldb")
+        sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
         create_dbtables()
 
 def connect_database():
-    connection = sqlite3.connect(r"User/leveldb/user.db")
+    connection = sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
     return connection
 
 if __name__ == '__main__':

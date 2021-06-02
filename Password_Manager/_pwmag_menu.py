@@ -1,9 +1,9 @@
-from _db_manager import storePassword, deletePassword, showWebsites, storeEncryptionComponents, getPasswordComponents, updateDatabaseWithNewMasterPassword, exportPasswords
-from User._master_encryption import passwordHasher
-from _Authenticate import checkTrust, verifyMasterPassword
-from User._data_encryption import encryptPassword, decryptPassword
-from User._local_backup import backup_Database_And_Config
-from Cloud_User._cloud_backup import backup_Database_And_Config_On_Cloud
+from Password_Manager.User._db_manager import storePassword, deletePassword, showWebsites, storeEncryptionComponents, getPasswordComponents, updateDatabaseWithNewMasterPassword, exportPasswords
+from Password_Manager.User._master_encryption import passwordHasher
+from Password_Manager._Authenticate import checkTrust, verifyMasterPassword
+from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
+from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config
+from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud
 from prettytable import PrettyTable
 import pyperclip
 import json
@@ -36,17 +36,7 @@ def backupMenu():
 
 
 def addEntry():
-    masterPasswordAttempt = 0
-    while masterPasswordAttempt <= 2:
-        masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
-        if verifyMasterPassword(masterPassword) == True:
-            break
-        else:
-            print("\n❌ Nope, Try Again ❌")
-            masterPasswordAttempt += 1
-    else:
-        print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
-        quit()
+    masterPassword = checkTrust()
 
     website = input("\nWebsite/App Name\n: ")
 
@@ -114,28 +104,33 @@ def showPassword():
         print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
         quit()
 
+    if showWebsites() != 0:
+        acc_id = input("\n [+] Please Enter Your Account ID To See Password: ")
+        encryptionComponents = getPasswordComponents(acc_id)
+        cipher_text = encryptionComponents[:-168]
+        salt = encryptionComponents[-168:-48]
+        nonce = encryptionComponents[-48:-24]
+        tag = encryptionComponents[-24:]
+
+        decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, masterPassword).decode('utf-8')   # Pattern should be (cipher_text, salt, nonce, tag, password)
+        # Adding decryptedPassword To Column
+        myTable = PrettyTable()
+        myTable.add_column("Password", [decryptedPassword * 4])
+        print(myTable)
+
+        print("\n🤞 Password is copied to clipboard  ✔ ✔ ✔")
+        pyperclip.copy(decryptedPassword)
+    else:
+        print("\nNothing to see. First feed me some info 🤳😃😜")
+
+
+def showEntries():
     showWebsites()
-
-    acc_id = input("\n [+] Please Enter Your Account ID To See Password: ")
-    encryptionComponents = getPasswordComponents(acc_id)
-    cipher_text = encryptionComponents[:-168]
-    salt = encryptionComponents[-168:-48]
-    nonce = encryptionComponents[-48:-24]
-    tag = encryptionComponents[-24:]
-
-    decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, masterPassword).decode('utf-8')   # Pattern should be (cipher_text, salt, nonce, tag, password)
-    # Adding decryptedPassword To Column
-    myTable = PrettyTable()
-    myTable.add_column("Password", [decryptedPassword * 4])
-    print(myTable)
-
-    print("\n🤞 Password is copied to clipboard  ✔ ✔ ✔")
-    pyperclip.copy(decryptedPassword)
 
 
 def backup():
     backup_Database_And_Config()
-    with open("config.json", "r+") as config_file:
+    with open("Password_Manager/config.json", "r+") as config_file:
         isAutoBackupAllowed = json.load(config_file)
         isAutoBackupAllowed['Automatic Backup'] = True
         config_file.seek(0)
@@ -145,7 +140,7 @@ def backup():
 
 def cloudBackup():
     backup_Database_And_Config_On_Cloud()
-    with open("config.json", "r+") as config_file:
+    with open("Password_Manager/config.json", "r+") as config_file:
         isAutoBackupAllowed = json.load(config_file)
         isAutoBackupAllowed['Automatic Cloud Backup'] = True
         config_file.seek(0)
@@ -182,3 +177,12 @@ def exportEntriesCsv():
 
     exportPasswords()
     print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
+
+
+def stopLocalBackup():
+    with open("Password_Manager/config.json", "r+") as config_file:
+        isAutoBackupAllowed = json.load(config_file)
+        isAutoBackupAllowed['Automatic Backup'] = False
+        config_file.seek(0)
+        json.dump(isAutoBackupAllowed, config_file)
+        config_file.truncate()

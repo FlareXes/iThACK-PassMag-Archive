@@ -1,5 +1,5 @@
 from Cryptodome.Cipher import AES
-from User._master_encryption import saltGenrator
+from Password_Manager.User._master_encryption import saltGenrator
 import hashlib
 from base64 import b64encode, b64decode
 

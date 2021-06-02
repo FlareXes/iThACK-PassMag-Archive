@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 import glob
 import os
+import json
 
 def backup_Database_And_Config():
     # create path, if it doesn't exist'
@@ -9,20 +10,23 @@ def backup_Database_And_Config():
     location.mkdir(parents=True, exist_ok=True)
     
     # copy database from leveldb
-    shutil.copy("User/leveldb/user.db", location)
+    shutil.copy("Password_Manager/User/leveldb/user.db", location)
     
     # copy all file from masterlevel
-    files_to_backup = glob.glob("User/masterlevel/*.bin")
+    files_to_backup = glob.glob("Password_Manager/User/masterlevel/*.bin")
     for filename in files_to_backup:
         shutil.copy(filename, location)
 
 
 def restore(whatToBackup):
+    '''
+    This function will restore previously backed up master password files and password database.
+    '''
     if whatToBackup == "masterpassword":
         backedUp_key = "C:\\ProgramData\\iThACK Passmag\\00003.1.KEY.bin"
         backedUp_salt = "C:\\ProgramData\\iThACK Passmag\\00003.1.SALT.bin"
 
-        restoreFileLocation = Path("User/masterlevel")
+        restoreFileLocation = Path("Password_Manager/User/masterlevel")
         restoreFileLocation.mkdir(parents=True, exist_ok=True)
 
         if os.path.exists(backedUp_key and backedUp_salt):
@@ -35,7 +39,7 @@ def restore(whatToBackup):
     elif whatToBackup == "passworddatabase":
         backedUp_database = "C:\\ProgramData\\iThACK Passmag\\user.db"
 
-        restoreFileLocation = Path("User/leveldb")
+        restoreFileLocation = Path("Password_Manager/User/leveldb")
         restoreFileLocation.mkdir(parents=True, exist_ok=True)
 
         if os.path.exists(backedUp_database):
