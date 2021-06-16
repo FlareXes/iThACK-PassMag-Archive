@@ -2,34 +2,42 @@ from Password_Manager.User._db_manager import storePassword, deletePassword, sho
 from Password_Manager.User._master_encryption import passwordHasher
 from Password_Manager._Authenticate import checkTrust, verifyMasterPassword
 from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
-from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config
-from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud
+from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config, deleteLocalBackup
+from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud, deleteCloudBackup
+from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
 from prettytable import PrettyTable
+from colorama import Fore
+from colorama import Style
+import colorama
 import pyperclip
 import json
 import os
 
 def menu():
     print('''
-        1. See password
-        2. Add a new password
-        3. Delete existing password
-        4. View existing details password
-        5. Change Master Password
-        6. Backup
-        7. Export Passwords Into CSV
-        Q. Exit
-        ''')
-    return input("    : ")
+1. See password
+2. Add a new password
+3. Delete existing password
+4. View existing details password
+5. Change Master Password
+6. Backup
+7. Export Passwords Into CSV
+8. Dark Web Monitoring
+Q. Exit
+''')
+    return input(": ")
 
 
 def backupMenu():
     print('''
     1. Offline Local Backup
-    2. Cloud Backup (Useful For Sync)
-    3. Setup Both Local And Cloud Backup
-    4. Restore Backup
-    5. Stop Passwords Backup
+    2. Restore Backup
+    3. Stop Passwords Backup
+
+    4. Cloud Backup (Useful For Sync)
+    5. Restore Cloud Backup
+    6. Stop Cloud Backup
+    7. Setup Both Local And Cloud Backup
     Q. Go Back
     ''')
     return input("    : ")
@@ -137,6 +145,9 @@ def backup():
         json.dump(isAutoBackupAllowed, config_file)
         config_file.truncate()
 
+        print("\n👌 All Passwords Have Been Backed Up On Local System 📌")
+        print("\n👌 From Next Time All Passwords Automatically Will Be Backed Up 📌")
+
 
 def cloudBackup():
     backup_Database_And_Config_On_Cloud()
@@ -146,6 +157,34 @@ def cloudBackup():
         config_file.seek(0)
         json.dump(isAutoBackupAllowed, config_file)
         config_file.truncate()
+
+        print("\n👌 All Passwords Have Been Backed Up On Cloud 📌")
+        print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up 📌")
+
+
+def stopLocalBackup():
+    print("\n [*] By proceeding feather YOU WILL LOST ALL YOUR BACKED UP PASSWORDS")
+    warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
+
+    if warn == "y" or warn == "yes":
+        deleteLocalBackup()
+    elif warn == "n" or warn == "no":
+        print("\n 💯 Safely Canceled")
+    else:
+        print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
+
+
+def stopCloudBackup():
+    print("\n [*] By proceeding feather YOU WILL LOST ALL YOUR CLOUD BACKUP")
+    warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
+
+    if warn == "y" or warn == "yes":
+        deleteCloudBackup()
+    elif warn == "n" or warn == "no":
+        print("\n 💯 Safely Canceled")
+    else:
+        print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
+
 
 
 def changeMasterPassword():
@@ -179,10 +218,6 @@ def exportEntriesCsv():
     print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
 
 
-def stopLocalBackup():
-    with open("Password_Manager/config.json", "r+") as config_file:
-        isAutoBackupAllowed = json.load(config_file)
-        isAutoBackupAllowed['Automatic Backup'] = False
-        config_file.seek(0)
-        json.dump(isAutoBackupAllowed, config_file)
-        config_file.truncate()
+def checkPwnedPasswords():
+    test = managePwnedPasswords()
+    print(test)
