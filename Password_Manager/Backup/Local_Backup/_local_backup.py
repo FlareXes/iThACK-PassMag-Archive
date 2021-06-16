@@ -36,7 +36,7 @@ def restore(whatToBackup):
             print("\n❌ Backup Configuration Not Found 📌\n")
             exit()
 
-    elif whatToBackup == "passworddatabase":
+    if whatToBackup == "passworddatabase":
         backedUp_database = "C:\\ProgramData\\iThACK Passmag\\user.db"
 
         restoreFileLocation = Path("Password_Manager/User/leveldb")
@@ -47,3 +47,18 @@ def restore(whatToBackup):
         else:
             print("\n❌ Backup Configuration Not Found 📌\n")
             exit()
+
+def deleteLocalBackup():
+    print('\n❌✌❌ deleting backup ❌✌❌')
+
+    backedUp_config = "C:\\ProgramData\\iThACK Passmag"
+    if os.path.exists(backedUp_config):
+        os.remove(backedUp_config)
+
+    with open("Password_Manager/config.json", "r+") as config_file:
+        isAutoBackupAllowed = json.load(config_file)
+        isAutoBackupAllowed['Automatic Backup'] = False
+        config_file.seek(0)
+        json.dump(isAutoBackupAllowed, config_file)
+        config_file.truncate()
+    print("\n[-] records deleted")

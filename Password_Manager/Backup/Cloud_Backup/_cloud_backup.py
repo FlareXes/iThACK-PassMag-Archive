@@ -2,6 +2,7 @@ from Password_Manager.Backup.Cloud_Backup._cloud_db_manager import storePassword
 from Password_Manager.Backup.Cloud_Backup._cloud_user_db import connect_cloud_server
 from Password_Manager.User._user_db import connect_database
 import sqlite3
+import json
 
 def connect_local_database():
     connection = sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
@@ -78,3 +79,27 @@ def cloud_Restore():
     mycursor.executemany(sqlQuery_2, entryTuple_2)
     localConnection.commit()
     localConnection.close()
+    print("\n🤞 Successfully Restored To The Previous Stage 🐬")
+
+
+
+def deleteCloudBackup():
+    print('\n❌✌❌ deleting cloud backup ❌✌❌')
+    with open("Password_Manager/config.json", "r+") as config_file:
+        isAutoBackupAllowed = json.load(config_file)
+        isAutoBackupAllowed['Automatic Cloud Backup'] = False
+        config_file.seek(0)
+        json.dump(isAutoBackupAllowed, config_file)
+        config_file.truncate()
+
+    connection = connect_cloud_server()
+    mycursor = connection.cursor()
+
+    sqlQuery_1 = "DROP TABLE IF EXISTS UserDataBase"
+    sqlQuery_2 = "DROP TABLE IF EXISTS UserDataBase_Encryption"
+
+    mycursor.execute(sqlQuery_1)
+    mycursor.execute(sqlQuery_2)
+    connection.commit()
+    connection.close()
+    print("\n[-] records deleted")

@@ -3,13 +3,17 @@ import json
 import os
 
 class checkBackup:
-    def isLocalBackupAllowed():
+    def __main__(self):
+        self.configFile = "Password_Manager/config.json"
+
+    def isLocalBackupAllowed(self):
+        # with open(self.configFile, "r") as config_file:
         with open("Password_Manager/config.json", "r") as config_file:
             isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
         return isAutoBackupAllowed
 
-    def isCloudBackupAllowed():
-        with open("Password_Manager/config.json", "r") as config_file:
+    def isCloudBackupAllowed(self):
+        with open(self.configFile, "r") as config_file:
             isAutoBackupAllowed = json.load(config_file)['Automatic Cloud Backup']
         return isAutoBackupAllowed
 
@@ -24,13 +28,14 @@ def checkConfigurations():
         data = {
         'Automatic Cloud Backup': False,
         'Automatic Backup': False,
+        'Installation': True,
         }
         with open("Password_Manager/config.json", "w") as config_file:
             json.dump(data, config_file)
 
-
-    isAutoBackupAllowed = checkBackup.isLocalBackupAllowed()
+    check = checkBackup()
     if not os.path.exists(userSalt and userKey and userDatabase):
+        isAutoBackupAllowed = check.isLocalBackupAllowed()
         if isAutoBackupAllowed == True:
             print("\n⚠ Configuration File Not Found ⁉\n")
             askToRestore = input("Restore Backed Up Configuration (y/n): ")
@@ -49,6 +54,6 @@ def checkConfigurations():
             print('''\nYou Completely Messed Up! With Our Software.
 Therefore You Have Lost All Your Passwords Because Their Was Backup Set Up.
 You Must Need You Reinstall This Software. Just Run "python _install.py" Without Quotes.
-And Be Aware Next Don't Forget To Backup Your Passwords With iThACK PassMag Functionality.\n
-Best Wishes From Whole iThACK PassMag Team. Hmmm...Also Sorry For In Inconvenience And Your Lose.\n''')
+And Be Aware Next Time, Don't Forget To Backup Your Passwords With iThACK PassMag Functionality.\n
+Best Wishes From Whole iThACK PassMag Team. Hmmm...Also Sorry For Inconvenience And Your Lose.\n''')
             exit()

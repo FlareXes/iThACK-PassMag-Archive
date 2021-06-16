@@ -7,8 +7,8 @@ import pandas as pd
 def storePassword(web_name, url, username, email, password, description):
     sqlQuery = "INSERT INTO UserDataBase (Website, URL, Username, Email, Password, Description) VALUES (?, ?, ?, ?, ?, ?)"
     val = (web_name, url, username, email, password, description)
-
     connection = connect_database()
+
     mycursor = connection.cursor()
     mycursor.execute(sqlQuery, val)
     connection.commit()
@@ -22,7 +22,7 @@ def storePassword(web_name, url, username, email, password, description):
 def deletePassword(acc_Id):
     connection = connect_database()
     mycursor = connection.cursor()
-    
+
     sqlQuery_1 = "DELETE FROM UserDataBase WHERE Id = ?"
     sqlQuery_2 = "DELETE FROM UserDataBase_Encryption WHERE Identification = ?"
     accIdToDelete = (acc_Id,)
@@ -42,14 +42,14 @@ def showWebsites():
     mycursor.execute(sqlQuery)
     rows = mycursor.fetchall()
     connection.close()
-    
+
     myTable = PrettyTable(["ID", "Website", "URL", "Username", "Email", "Description"])
     # Adding Data To Columns
     for row in rows:
         row = list(row)
         myTable.add_row(row)
     print(myTable)
-    return  len(rows)
+    return len(rows)
 
 
 def getPasswordComponents(acc_Id):
@@ -85,15 +85,15 @@ def storeEncryptionComponents(entryID, encryptionComponents):
 def updateDatabaseWithNewMasterPassword(masterPassword, newMasterPassword):
     connection = connect_database()
     mycursor = connection.cursor()
-    
+
     sqlQuery_1 = "SELECT DISTINCT ID, Password FROM 'UserDataBase' WHERE ID IN (SELECT DISTINCT Identification FROM UserDataBase_Encryption)"
-    mycursor.execute(sqlQuery_1,)
+    mycursor.execute(sqlQuery_1, )
     IDPassword = mycursor.fetchall()
 
     sqlQuery_2 = "SELECT DISTINCT Identification, Encryption FROM 'UserDataBase_Encryption' WHERE Identification IN (SELECT DISTINCT ID FROM UserDataBase)"
-    mycursor.execute(sqlQuery_2,)
+    mycursor.execute(sqlQuery_2, )
     IDEncryptionComponent = mycursor.fetchall()
-    
+
     for IDPasswordTuple, IDEncryptionComponentTuple in zip(IDPassword, IDEncryptionComponent):
         entryID = IDPasswordTuple[0]
         cipher_text = IDPasswordTuple[1]
@@ -104,7 +104,7 @@ def updateDatabaseWithNewMasterPassword(masterPassword, newMasterPassword):
         tag = encryptionComponents[-24:]
 
         decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, masterPassword).decode('utf-8')
-        
+
         newPasswordEncryptionComponents = encryptPassword(decryptedPassword, newMasterPassword)
         salt = newPasswordEncryptionComponents['salt']
         nonce = newPasswordEncryptionComponents['nonce']
@@ -115,9 +115,9 @@ def updateDatabaseWithNewMasterPassword(masterPassword, newMasterPassword):
         val = (password, entryID)
         mycursor.execute(sqlQuery, val)
         connection.commit()
-        
+
         sqlQuery = "UPDATE UserDataBase_Encryption SET Encryption = ? WHERE Identification = ?"
-        val = (salt+nonce+tag, entryID)
+        val = (salt + nonce + tag, entryID)
         mycursor.execute(sqlQuery, val)
         connection.commit()
 
@@ -137,7 +137,7 @@ def exportPasswords():
 
     ExportEntries = []
     for i in range(0, len(rows_2)):
-        encryptionComponents = rows_1[i][5]+str(rows_2[i][0])
+        encryptionComponents = rows_1[i][5] + str(rows_2[i][0])
         cipher_text = encryptionComponents[:-168]
         salt = encryptionComponents[-168:-48]
         nonce = encryptionComponents[-48:-24]
