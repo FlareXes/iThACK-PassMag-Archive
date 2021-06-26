@@ -53,7 +53,7 @@ def deleteLocalBackup():
 
     backedUp_config = "C:\\ProgramData\\iThACK Passmag"
     if os.path.exists(backedUp_config):
-        os.remove(backedUp_config)
+        shutil.rmtree(backedUp_config)
 
     with open("Password_Manager/config.json", "r+") as config_file:
         isAutoBackupAllowed = json.load(config_file)

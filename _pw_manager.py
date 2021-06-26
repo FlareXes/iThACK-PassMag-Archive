@@ -33,6 +33,8 @@ while True:
             restore("masterpassword")
             restore("passworddatabase")
             print("\n🤞 Successfully Restored To The Previous Stage 🐬")
+        elif options == '3':
+            stopLocalBackup()
         elif options == '4':
             cloudBackup()
         elif options == '5':
