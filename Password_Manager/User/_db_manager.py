@@ -33,7 +33,6 @@ def deletePassword(acc_Id):
     connection.close()
     print("\n[-] record deleted")
 
-
 def showWebsites():
     sqlQuery = "SELECT ID, Website, URL, Username, Email, Description FROM UserDataBase"
 
@@ -150,3 +149,19 @@ def exportPasswords():
     df = pd.DataFrame(ExportEntries, columns=["ID", "Website", "URL", "Username", "Email", "Password", "Description"])
     df.to_csv("export.csv", index=False)
     connection.close()
+
+def getColumn(columnName):
+    columnName = columnName.split(' ')[0]
+    connection = connect_database()
+    mycursor = connection.cursor()
+
+    sqlQuery = f"SELECT ID, {columnName} FROM UserDataBase"
+    mycursor.execute(sqlQuery)
+    rows_1 = mycursor.fetchall()
+    connection.close()
+
+    columnEnties = []
+    for columnEntry in rows_1:
+        columnEnties.append(columnEntry)
+
+    return columnEnties

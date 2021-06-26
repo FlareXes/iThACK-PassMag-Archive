@@ -2,13 +2,16 @@ from hashlib import sha1
 import requests
 from Password_Manager.User._user_db import connect_database
 from Password_Manager.User._data_encryption import decryptPassword
+from Password_Manager._Authenticate import checkTrust
 import colorama
 from colorama import Fore
 from colorama import Style
 from prettytable import PrettyTable
 import os
 
-def getPasswords(masterPassword="plz"):
+def getPasswords():
+    masterPassword = checkTrust()
+
     connection = connect_database()
     mycursor = connection.cursor()
     sqlQuery_1 = "SELECT ID, Website, Username, Password FROM UserDataBase"
@@ -26,7 +29,7 @@ def getPasswords(masterPassword="plz"):
         salt = encryptionComponents[-168:-48]
         nonce = encryptionComponents[-48:-24]
         tag = encryptionComponents[-24:]
-        decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, "plz").decode('utf-8')
+        decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, masterPassword).decode('utf-8')
         ExportEntries.append((rows_1[i][0], rows_1[i][1], rows_1[i][2], decryptedPassword))
     
     return ExportEntries
