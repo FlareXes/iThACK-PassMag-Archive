@@ -1,5 +1,4 @@
-from Password_Manager._pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword, backup, cloudBackup, exportEntriesCsv, showEntries, checkPwnedPasswords, stopCloudBackup, stopLocalBackup
-from Password_Manager.Backup.Local_Backup._local_backup import restore
+from Password_Manager._pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword, backup, cloudBackup, exportEntriesCsv, showEntries, checkPwnedPasswords, stopCloudBackup, stopLocalBackup, restoreLocalBackup, importCsv
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import cloud_Restore
 from Password_Manager._Authenticate import checkTrust
 from Password_Manager._config_checkup import checkConfigurations
@@ -30,9 +29,7 @@ while True:
         if options == '1':
             backup()
         elif options == '2':
-            restore("masterpassword")
-            restore("passworddatabase")
-            print("\n🤞 Successfully Restored To The Previous Stage 🐬")
+            restoreLocalBackup()
         elif options == '3':
             stopLocalBackup()
         elif options == '4':
@@ -50,6 +47,8 @@ while True:
         exportEntriesCsv()
     elif choice == '8':
         checkPwnedPasswords()
+    elif choice == '9':
+        importCsv()
     elif choice == 'Q' or choice == 'q':
         exit()
     else:

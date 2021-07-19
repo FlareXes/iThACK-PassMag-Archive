@@ -23,8 +23,6 @@ def verifyMasterPassword(masterPassword):
     with open("Password_Manager/User/masterlevel/00003.1.KEY.bin", "rb") as keyFile:
         key = keyFile.read()
 
-    new_key = hashlib.pbkdf2_hmac('sha256', masterPassword.encode('utf-8'), salt, 150000,
-    dklen=128   # Get a 128 byte key
-)
+    new_key = hashlib.pbkdf2_hmac('sha256', masterPassword.encode('utf-8'), salt, 150000, dklen=128)
     trust = secrets.compare_digest(key, new_key)
     return trust

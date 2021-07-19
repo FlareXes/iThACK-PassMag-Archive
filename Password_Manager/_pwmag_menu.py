@@ -2,14 +2,16 @@ from Password_Manager.User._db_manager import storePassword, deletePassword, sho
 from Password_Manager.User._master_encryption import passwordHasher
 from Password_Manager._Authenticate import checkTrust, verifyMasterPassword
 from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
-from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config, deleteLocalBackup
+from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config, deleteLocalBackup, restore
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud, deleteCloudBackup
 from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
+from Password_Manager.Importpassword import _csv_password_importer
 from prettytable import PrettyTable
-from colorama import Fore
+from pandas import read_csv
 from colorama import Style
-import colorama
+from colorama import Fore
 import pyperclip
+import colorama
 import json
 import os
 
@@ -23,6 +25,7 @@ def menu():
 6. Backup
 7. Export Passwords Into CSV
 8. Dark Web Monitoring
+9. Import Password From CSV
 Q. Exit
 ''')
     return input(": ")
@@ -186,6 +189,10 @@ def stopCloudBackup():
         print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
 
 
+def restoreLocalBackup():
+    restore()
+    print("\n🤞 Successfully Restored To The Previous Stage 🐬")
+
 
 def changeMasterPassword():
     print("\nCurrent Password (Verify Yourself) 📌\n")
@@ -198,7 +205,7 @@ def changeMasterPassword():
             isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
         if isAutoBackupAllowed == True:
             backup()
-    print("\nPassword Has Changed Successfully ✔🤞")
+    print("\nPassword Has Changed Successfully ✔ 🤞")
 
 
 def exportEntriesCsv():
@@ -221,3 +228,16 @@ def exportEntriesCsv():
 def checkPwnedPasswords():
     test = managePwnedPasswords()
     print(test)
+
+
+def importCsv():
+    # connection = connect_database()
+    # myCursor = connection.cursor()
+
+    csv = read_csv('export.csv')
+    cpCSV = csv.copy()
+    cpCSV.fillna("", inplace=True)
+    del(csv)
+
+    _csv_password_importer.storeCsv(cpCSV)
+    print("\n✌✌✌ Passwords Importred Successfully ✌✌✌")
