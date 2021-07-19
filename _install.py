@@ -10,9 +10,10 @@ if __name__ == '__main__':
         passwordHasher("don't use weak master password")
 
         data = {
-            'Automatic Cloud Backup': False,
-            'Automatic Backup': False,
             'Installation': True,
+            'Automatic Backup': False,
+            'Automatic Cloud Backup': False,
+            'User Preferred Local Backup': False,
         }
         with open("Password_Manager/config.json", "w") as config_file:
             json.dump(data, config_file)

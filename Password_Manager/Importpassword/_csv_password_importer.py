@@ -1,11 +1,10 @@
 from pandas import read_csv
-from Password_Manager.User._user_db import connect_database
 from Password_Manager.User._data_encryption import encryptPassword
 from Password_Manager.User._db_manager import storePassword, storeEncryptionComponents
 
 
 def csv_encrypter(cpCSV):
-    print("[*] Encrypting CSV Passwords")
+    print("\n[*] Encrypting CSV Passwords")
     passwordsCipher = []
     passwordsComponentes  = []
     passwords = cpCSV['Password']
@@ -24,12 +23,12 @@ def csv_encrypter(cpCSV):
     cpCSV['Cipher'] = passwordsCipher
     cpCSV['Componentes'] = passwordsComponentes
     
-    return encryCSV
+    return cpCSV
 
 
-def storeCsv():
-    print("[*] Loading CSV Into Database")
-    encryCSV = csv_encrypter()
+def storeCsv(cpCSV):
+    print("\n[*] Loading CSV Into Database")
+    encryCSV = csv_encrypter(cpCSV)
     entriesList = encryCSV.values.tolist()
 
     for entryList in entriesList:
@@ -37,12 +36,3 @@ def storeCsv():
                     email = entryList[3], password = entryList[5], description=entryList[4])
 
         storeEncryptionComponents(entryID=storedEntryID, encryptionComponents=entryList[6])
-
-
-def importCsv():
-    connection = connect_database()
-    myCursor = connection.cursor()
-
-    csv = read_csv('export.csv')
-    cpCSV = csv.copy()
-    cpCSV.fillna("", inplace=True)

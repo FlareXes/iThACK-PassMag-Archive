@@ -1,12 +1,17 @@
-import shutil
 from pathlib import Path
+import shutil
 import glob
-import os
 import json
+import os
 
-def backup_Database_And_Config():
+defaultBackedUp_key_location = "C:\\ProgramData\\iThACK Passmag\\00003.1.KEY.bin"
+defaultBackedUp_salt_location = "C:\\ProgramData\\iThACK Passmag\\00003.1.SALT.bin"
+defaultBackedUp_database_location = "C:\\ProgramData\\iThACK Passmag\\user.db"
+defaultBackupPath="C:\\ProgramData\\iThACK PassMag"
+
+def backup_Database_And_Config(backupPath=defaultBackupPath):
     # create path, if it doesn't exist'
-    location = Path("C:\\ProgramData\\iThACK PassMag")
+    location = Path(backupPath)
     location.mkdir(parents=True, exist_ok=True)
     
     # copy database from leveldb
@@ -18,47 +23,37 @@ def backup_Database_And_Config():
         shutil.copy(filename, location)
 
 
-def restore(whatToBackup):
+def restore(backedUp_key=defaultBackedUp_key_location, backedUp_salt=defaultBackedUp_salt_location, backedUp_database=defaultBackedUp_database_location):
     '''
     This function will restore previously backed up master password files and password database.
     '''
-    if whatToBackup == "masterpassword":
-        backedUp_key = "C:\\ProgramData\\iThACK Passmag\\00003.1.KEY.bin"
-        backedUp_salt = "C:\\ProgramData\\iThACK Passmag\\00003.1.SALT.bin"
 
-        restoreFileLocation = Path("Password_Manager/User/masterlevel")
-        restoreFileLocation.mkdir(parents=True, exist_ok=True)
+    restoreMasterlevelLocation = Path("Password_Manager/User/masterlevel")
+    restoreMasterlevelLocation.mkdir(parents=True, exist_ok=True)
 
-        if os.path.exists(backedUp_key and backedUp_salt):
-            shutil.copy(backedUp_key,restoreFileLocation)
-            shutil.copy(backedUp_salt,restoreFileLocation)
-        else:
-            print("\n❌ Backup Configuration Not Found 📌\n")
-            exit()
+    restoreLeveldbLocation = Path("Password_Manager/User/leveldb")
+    restoreLeveldbLocation.mkdir(parents=True, exist_ok=True)
 
-    if whatToBackup == "passworddatabase":
-        backedUp_database = "C:\\ProgramData\\iThACK Passmag\\user.db"
-
-        restoreFileLocation = Path("Password_Manager/User/leveldb")
-        restoreFileLocation.mkdir(parents=True, exist_ok=True)
-
-        if os.path.exists(backedUp_database):
-            shutil.copy(backedUp_database,restoreFileLocation)
-        else:
-            print("\n❌ Backup Configuration Not Found 📌\n")
-            exit()
+    if os.path.exists(backedUp_key and backedUp_salt and backedUp_database):
+        shutil.copy(backedUp_key,restoreMasterlevelLocation)
+        shutil.copy(backedUp_salt,restoreMasterlevelLocation)
+        shutil.copy(backedUp_database,restoreLeveldbLocation)
+        print("\n[+] Restore Successful ✔ ✔ ✔")
+    else:
+        print("\n❌ Backup Configuration Not Found 📌\n")
+    
 
 def deleteLocalBackup():
     print('\n❌✌❌ deleting backup ❌✌❌')
 
-    backedUp_config = "C:\\ProgramData\\iThACK Passmag"
-    if os.path.exists(backedUp_config):
-        shutil.rmtree(backedUp_config)
+    backedUp_folder = defaultBackupPath
+    if os.path.exists(backedUp_folder):
+        shutil.rmtree(backedUp_folder)
 
     with open("Password_Manager/config.json", "r+") as config_file:
-        isAutoBackupAllowed = json.load(config_file)
-        isAutoBackupAllowed['Automatic Backup'] = False
+        backupConfig = json.load(config_file)
+        backupConfig['Automatic Backup'] = False
         config_file.seek(0)
-        json.dump(isAutoBackupAllowed, config_file)
+        json.dump(backupConfig, config_file)
         config_file.truncate()
     print("\n[-] records deleted")
