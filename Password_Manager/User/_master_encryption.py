@@ -21,18 +21,26 @@ def storeKeySalt(salt, key):
 
 
 def saltGenrator():
-    alphabet = string.ascii_letters + string.digits  + string.punctuation
-    while True:
-        salt = ''.join(secrets.choice(alphabet) for i in range(89))
-        if (sum(c.islower() for c in salt) >=19) and (sum(c.isupper() for c in salt) >=19) and (sum(c.isdigit() for c in salt)>=10):
-            break
-    return salt.encode('utf-8')
+    try:
+        alphabet = string.ascii_letters + string.digits  + string.punctuation
+        while True:
+            salt = ''.join(secrets.choice(alphabet) for i in range(89))
+            if (sum(c.islower() for c in salt) >=19) and (sum(c.isupper() for c in salt) >=19) and (sum(c.isdigit() for c in salt)>=10):
+                break
+        return salt.encode('utf-8')
+    except Exception as e:
+        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Generate Salt ❌❌❌")
+
 
 
 def passwordHasher(password):
-    salt = saltGenrator()
-    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 150000, dklen=128)
-    storeKeySalt(salt, key)
+    try:
+        salt = saltGenrator()
+        key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 150000, dklen=128)
+        storeKeySalt(salt, key)
+    except Exception as e:
+        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Unable To Hash The Password ❌❌❌")
+
 
 if __name__ == '__main__':
     print("\n❌❌❌ Don't Mess With Internal Files Otherwise You May Loss Your Data ❌❌❌")

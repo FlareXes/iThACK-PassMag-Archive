@@ -3,18 +3,23 @@ import secrets
 
 
 def checkTrust():
-    masterPasswordAttempt = 0
-    while masterPasswordAttempt <= 2:
-        masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
-        if verifyMasterPassword(masterPassword) == True:
-            break
+    try:
+        masterPasswordAttempt = 0
+        while masterPasswordAttempt <= 2:
+            masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
+            if verifyMasterPassword(masterPassword) == True:
+                break
+            else:
+                print("\n❌ Nope, Try Again ❌")
+                masterPasswordAttempt += 1
         else:
-            print("\n❌ Nope, Try Again ❌")
-            masterPasswordAttempt += 1
-    else:
-        print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
-        quit()
-    return masterPassword
+            print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
+            quit()
+        return masterPassword
+    except Exception as e:
+        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Verify The Trust Level ❌❌❌")
+        print("\n 👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋👋\n")
+        exit()
 
 
 def verifyMasterPassword(masterPassword):
