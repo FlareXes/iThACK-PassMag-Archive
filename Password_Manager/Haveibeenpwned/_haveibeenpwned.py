@@ -55,7 +55,7 @@ def managePwnedPasswords():
 
     if len(pwnedPasswords) != 0:
         print(Fore.RED + f'''\nYour below password has appeared in a data breach 
-    and should never be used. Change it.\n''' + Style.RESET_ALL)
+    and should never be used again. Change it.\n''' + Style.RESET_ALL)
         myTable = PrettyTable(["ID", "Website", "Username"])
         for row in pwnedPasswords:
             row = list(row)

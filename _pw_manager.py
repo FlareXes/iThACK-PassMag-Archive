@@ -52,9 +52,9 @@ while True:
     elif choice == '7':
         exportEntriesCsv()
     elif choice == '8':
-        checkPwnedPasswords()
-    elif choice == '9':
         importCsv()
+    elif choice == '9':
+        checkPwnedPasswords()
     elif choice == 'Q' or choice == 'q':
         exit()
     else:

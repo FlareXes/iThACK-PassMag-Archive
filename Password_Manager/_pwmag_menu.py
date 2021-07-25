@@ -7,6 +7,7 @@ from Password_Manager.Backup.Local_Backup._preference_local_backup import prefer
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud, deleteCloudBackup
 from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
 from Password_Manager.Importpassword import _csv_password_importer
+from Password_Manager.Essentials.network import checkInternet
 from prettytable import PrettyTable
 from pandas import read_csv
 from colorama import Style
@@ -25,8 +26,8 @@ def menu():
 5. Change Master Password
 6. Backup
 7. Export Passwords Into CSV
-8. Dark Web Monitoring
-9. Import Password From CSV
+8. Import Password From CSV
+9. Dark Web Monitoring
 Q. Exit
 ''')
     return input(": ")
@@ -108,17 +109,7 @@ def deleteEntry():
 
 
 def showPassword():
-    masterPasswordAttempt = 0
-    while masterPasswordAttempt <= 2:
-        masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
-        if verifyMasterPassword(masterPassword) == True:
-            break
-        else:
-            print("\n❌ Nope, Try Again ❌")
-            masterPasswordAttempt += 1
-    else:
-        print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
-        quit()
+    checkTrust()
 
     if showWebsites() != 0:
         acc_id = input("\n [+] Please Enter Your Account ID To See Password: ")
@@ -158,16 +149,20 @@ def backup():
 
 
 def cloudBackup():
-    backup_Database_And_Config_On_Cloud()
-    with open("Password_Manager/config.json", "r+") as config_file:
-        isAutoBackupAllowed = json.load(config_file)
-        isAutoBackupAllowed['Automatic Cloud Backup'] = True
-        config_file.seek(0)
-        json.dump(isAutoBackupAllowed, config_file)
-        config_file.truncate()
+    try:
+        backup_Database_And_Config_On_Cloud()
+        with open("Password_Manager/config.json", "r+") as config_file:
+            isAutoBackupAllowed = json.load(config_file)
+            isAutoBackupAllowed['Automatic Cloud Backup'] = True
+            config_file.seek(0)
+            json.dump(isAutoBackupAllowed, config_file)
+            config_file.truncate()
 
-        print("\n👌 All Passwords Have Been Backed Up On Cloud 📌")
-        print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up 📌")
+            print("\n👌 All Passwords Have Been Backed Up On Cloud 📌")
+            print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up 📌")
+    except Exception as e:
+        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Unable To Backup On Cloud ❌❌❌")
+
 
 
 def stopLocalBackup():
@@ -183,16 +178,18 @@ def stopLocalBackup():
 
 
 def stopCloudBackup():
-    print("\n [*] By proceeding feather YOU WILL LOST ALL YOUR CLOUD BACKUP")
-    warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
+    try:
+        print("\n [*] By proceeding feather YOU WILL LOST ALL YOUR CLOUD BACKUP")
+        warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
 
-    if warn == "y" or warn == "yes":
-        deleteCloudBackup()
-    elif warn == "n" or warn == "no":
-        print("\n 💯 Safely Canceled")
-    else:
-        print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
-
+        if warn == "y" or warn == "yes":
+            deleteCloudBackup()
+        elif warn == "n" or warn == "no":
+            print("\n 💯 Safely Canceled")
+        else:
+            print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
+    except Exception as e:
+        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Stop And Delete Cloud Backup ❌❌❌")
 
 def restoreLocalBackup():
     restore()
@@ -200,52 +197,61 @@ def restoreLocalBackup():
 
 
 def changeMasterPassword():
-    print("\nCurrent Password (Verify Yourself) 📌\n")
-    oldMasterPassword = checkTrust()
-    newMasterPassword = input("\n[+] New Enter Master Password: ")
-    updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
-    passwordHasher(newMasterPassword)
-    if os.path.exists("config.json"):
-        with open("config.json", "r") as config_file:
-            isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
-        if isAutoBackupAllowed == True:
-            backup()
-    print("\nPassword Has Changed Successfully ✔ 🤞")
+    try:
+        print("\nCurrent Password (Verify Yourself) 📌\n")
+        oldMasterPassword = checkTrust()
+        newMasterPassword = input("\n[+] New Enter Master Password: ")
+        updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
+        passwordHasher(newMasterPassword)
+        if os.path.exists("config.json"):
+            with open("config.json", "r") as config_file:
+                isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
+            if isAutoBackupAllowed == True:
+                backup()
+        print("\nPassword Has Changed Successfully ✔ 🤞")
+    except Exception as e:
+        print("\n❌❌❌ [-] Process Unsuccessful. Unable To Change Master Password ❌❌❌")
+
 
 
 def exportEntriesCsv():
-    masterPasswordAttempt = 0
-    while masterPasswordAttempt <= 2:
-        masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
-        if verifyMasterPassword(masterPassword) == True:
-            break
-        else:
-            print("\n❌ Nope, Try Again ❌")
-            masterPasswordAttempt += 1
-    else:
-        print("\n 👋👋👋👋👋👋👋👋👋 To Many Invalid Attempts!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
-        quit()
-
+    checkTrust()
     exportPasswords()
     print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
 
 
 def checkPwnedPasswords():
-    test = managePwnedPasswords()
-    print(test)
+    try:
+        checkInternet = checkInternet()
+        if checkInternet == True:
+            result = managePwnedPasswords()
+            print(result)
+        else:
+            print("\n❌❌❌ Internet Connection Required ❌❌❌")
+    except Exception as e:
+        print("\n❌❌❌ [-] Process Unsuccessful. Unable To Check Pwned Passwords ❌❌❌")
 
 
 def importCsv():
-    # connection = connect_database()
-    # myCursor = connection.cursor()
+    try:
+        from tkinter import Tk
+        from tkinter.filedialog import askopenfile
 
-    csv = read_csv('export.csv')
-    cpCSV = csv.copy()
-    cpCSV.fillna("", inplace=True)
-    del(csv)
-
-    _csv_password_importer.storeCsv(cpCSV)
-    print("\n✌✌✌ Passwords Importred Successfully ✌✌✌")
+        Tk().withdraw()
+        filename = askopenfile(title='Import CSV').name
+        
+        if filename.endswith(".csv"):
+            print(filename)
+            csv = read_csv('export.csv')
+            cpCSV = csv.copy()
+            cpCSV.fillna("", inplace=True)
+            del(csv)
+            _csv_password_importer.storeCsv(cpCSV)
+            print("\n✌✌✌ Passwords Imported Successfully ✌✌✌")
+        else:
+            print("\n🤔 File Must Be CSV!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
+    except Exception as e:
+        print("\n❌❌❌ Process Unsuccessful 🎐🎑📍 Can't Import CSV ❌❌❌")
 
 
 def userPreferredBackup():
@@ -257,3 +263,4 @@ def userPreferredBackup():
 
 def userPreferredRestore():
     preferredLocalRestore()
+    print("\n    🤞 Passwords Restored Successfully 🐬")
