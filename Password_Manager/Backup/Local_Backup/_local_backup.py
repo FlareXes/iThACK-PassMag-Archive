@@ -38,7 +38,7 @@ def restore(backedUp_key=defaultBackedUp_key_location, backedUp_salt=defaultBack
         shutil.copy(backedUp_key,restoreMasterlevelLocation)
         shutil.copy(backedUp_salt,restoreMasterlevelLocation)
         shutil.copy(backedUp_database,restoreLeveldbLocation)
-        print("\n[+] Restore Successful ✔ ✔ ✔")
+        print("\n🤞 Successfully Restored To The Previous Stage 🐬")
     else:
         print("\n❌ Backup Configuration Not Found 📌\n")
     

@@ -3,6 +3,7 @@ from Password_Manager.User._master_encryption import passwordHasher
 from Password_Manager._Authenticate import checkTrust, verifyMasterPassword
 from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
 from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config, deleteLocalBackup, restore
+from Password_Manager.Backup.Local_Backup._preference_local_backup import preferredLocalBackup, preferredLocalRestore
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud, deleteCloudBackup
 from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
 from Password_Manager.Importpassword import _csv_password_importer
@@ -40,7 +41,11 @@ def backupMenu():
     4. Cloud Backup (Useful For Sync)
     5. Restore Cloud Backup
     6. Stop Cloud Backup
-    7. Setup Both Local And Cloud Backup
+
+    7. User Preferrd Backup
+    8. Restore Backup From Preferred Location
+
+    9. Setup Both Local And Cloud Backup
     Q. Go Back
     ''')
     return input("    : ")
@@ -241,3 +246,14 @@ def importCsv():
 
     _csv_password_importer.storeCsv(cpCSV)
     print("\n✌✌✌ Passwords Importred Successfully ✌✌✌")
+
+
+def userPreferredBackup():
+    preferredLocalBackup()
+
+    print("\n    🤞 Successfully Stored To Preferred Location 🐬")
+    print("\n    ⚠ ⚠ ⚠  Please Take Care Of Backup Files That Colud Potentially Leak Your Credentials ⚠ ⚠ ⚠")
+
+
+def userPreferredRestore():
+    preferredLocalRestore()
