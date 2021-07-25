@@ -1,6 +1,7 @@
 from Password_Manager.User._user_db import connect_database
 from prettytable import PrettyTable
 from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
+from Password_Manager._Authenticate import checkTrust
 import pandas as pd
 
 
@@ -82,7 +83,8 @@ def getPasswordComponents(acc_Id):
 
         return cipher_text + encryptionComponents
     except Exception as e:
-        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Get Components ❌❌❌")
+        print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Get Components ❌❌❌\n")
+        exit()
 
 
 
@@ -148,6 +150,9 @@ def updateDatabaseWithNewMasterPassword(masterPassword, newMasterPassword):
 
 def exportPasswords():
     try:
+        masterPassword = checkTrust()
+        print("\n[+] Loading Passwords...")
+
         connection = connect_database()
         mycursor = connection.cursor()
         sqlQuery_1 = "SELECT ID, Website, URL, Username, Email, Password, Description FROM UserDataBase"
@@ -157,7 +162,6 @@ def exportPasswords():
         sqlQuery_2 = "SELECT Encryption FROM UserDataBase_Encryption"
         mycursor.execute(sqlQuery_2)
         rows_2 = mycursor.fetchall()
-
         ExportEntries = []
         for i in range(0, len(rows_2)):
             encryptionComponents = rows_1[i][5] + str(rows_2[i][0])
@@ -165,11 +169,10 @@ def exportPasswords():
             salt = encryptionComponents[-168:-48]
             nonce = encryptionComponents[-48:-24]
             tag = encryptionComponents[-24:]
-            decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, "plz").decode('utf-8')
+            decryptedPassword = decryptPassword(cipher_text, salt, nonce, tag, masterPassword).decode('utf-8')
             rowList = list(rows_1[i])
             rowList[5] = decryptedPassword
             ExportEntries.append(tuple(rowList))
-
         df = pd.DataFrame(ExportEntries, columns=["ID", "Website", "URL", "Username", "Email", "Password", "Description"])
         df.to_csv("export.csv", index=False)
         connection.close()

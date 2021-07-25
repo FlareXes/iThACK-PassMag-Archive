@@ -39,6 +39,7 @@ def backup_Database_And_Config_On_Cloud():
 
 
 def cloud_Restore():
+    print("\n Please Wait This May Take Time")
     cloudConnection = connect_cloud_server()
     mycursor = cloudConnection.cursor()
 
@@ -82,7 +83,6 @@ def cloud_Restore():
     print("\n🤞 Successfully Restored To The Previous Stage 🐬")
 
 
-
 def deleteCloudBackup():
     print('\n❌✌❌ deleting cloud backup ❌✌❌')
     with open("Password_Manager/config.json", "r+") as config_file:
@@ -97,9 +97,11 @@ def deleteCloudBackup():
 
     sqlQuery_1 = "DROP TABLE IF EXISTS UserDataBase"
     sqlQuery_2 = "DROP TABLE IF EXISTS UserDataBase_Encryption"
+    sqlQuery_2 = "DROP TABLE IF EXISTS Secret_Encryption"
 
     mycursor.execute(sqlQuery_1)
     mycursor.execute(sqlQuery_2)
+    mycursor.execute(sqlQuery_3)
     connection.commit()
     connection.close()
     print("\n[-] records deleted")

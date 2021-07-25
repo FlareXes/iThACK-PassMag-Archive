@@ -46,7 +46,7 @@ def backupMenu():
     7. User Preferrd Backup
     8. Restore Backup From Preferred Location
 
-    9. Setup Both Local And Cloud Backup
+    9. Setup Both Local And Cloud Backup (Unstable)
     Q. Go Back
     ''')
     return input("    : ")
@@ -109,7 +109,7 @@ def deleteEntry():
 
 
 def showPassword():
-    checkTrust()
+    masterPassword = checkTrust()
 
     if showWebsites() != 0:
         acc_id = input("\n [+] Please Enter Your Account ID To See Password: ")
@@ -215,15 +215,14 @@ def changeMasterPassword():
 
 
 def exportEntriesCsv():
-    checkTrust()
     exportPasswords()
     print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
 
 
 def checkPwnedPasswords():
     try:
-        checkInternet = checkInternet()
-        if checkInternet == True:
+        connCheck = checkInternet()
+        if connCheck == True:
             result = managePwnedPasswords()
             print(result)
         else:
