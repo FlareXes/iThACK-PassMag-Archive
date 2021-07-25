@@ -24,8 +24,6 @@ def preferredLocalRestore():
         backedUp_key = dirname + "/00003.1.KEY.bin"
         backedUp_salt = dirname + "/00003.1.SALT.bin"
         backedUp_database = dirname + "/user.db"
-        print(backedUp_key, backedUp_salt, backedUp_database)
         restore(backedUp_key, backedUp_salt, backedUp_database)
-        print("\n🤞 Successfully Restored To The Previous Stage 🐬")
     else:
         print('\n❌❌❌ Backup Folder Should Only Consist iThACK PassMag Files ❌❌❌')
