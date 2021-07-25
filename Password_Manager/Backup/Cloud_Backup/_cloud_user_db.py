@@ -1,8 +1,13 @@
 import mysql.connector
 import os
 
+MYSQL_ADDON_DB="b5lgagcy8sxr9bhsfthg"
+MYSQL_ADDON_HOST="b5lgagcy8sxr9bhsfthg-mysql.services.clever-cloud.com"
+MYSQL_ADDON_PASSWORD="E141qszcW4yoSJKErW3i"
+MYSQL_ADDON_USER="u6pkm7onuffjmttm"
+
 def connect_cloud_server():
-    connection = mysql.connector.connect(user="ukjqcvpzl1zyir4e", password="9GwcPYLnFmbynDP43nfg", host="bzgvile1yxwbntvbgrnu-mysql.services.clever-cloud.com", database="bzgvile1yxwbntvbgrnu")
+    connection = mysql.connector.connect(user=MYSQL_ADDON_USER, password=MYSQL_ADDON_PASSWORD, host=MYSQL_ADDON_HOST, database=MYSQL_ADDON_DB)
     return connection
 
 

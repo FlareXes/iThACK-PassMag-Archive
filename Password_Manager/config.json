@@ -1,1 +1,1 @@
-{"Installation": true, "Automatic Backup": false, "Automatic Cloud Backup": false, "User Preferred Local Backup": true}
+{"Installation": true, "Automatic Backup": true, "Automatic Cloud Backup": false, "User Preferred Local Backup": true}

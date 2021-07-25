@@ -37,6 +37,7 @@ def getPasswords():
 
 def haveibeenpwned():
     ExportEntries = getPasswords()
+    print("\n[+] Please Wait It May Take Time ⌛⏳")
     results = []
     for entry in ExportEntries:
         password = entry[3]
