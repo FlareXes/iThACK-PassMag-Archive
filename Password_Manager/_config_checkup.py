@@ -5,7 +5,6 @@ from Password_Manager.Backup.Local_Backup import _preference_local_backup
 
 class checkBackup:
     def isLocalBackupAllowed(self):
-        # with open(self.configFile, "r") as config_file:
         with open("Password_Manager/config.json", "r") as config_file:
             isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
         return isAutoBackupAllowed
