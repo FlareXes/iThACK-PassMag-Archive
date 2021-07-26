@@ -150,16 +150,21 @@ def backup():
 
 def cloudBackup():
     try:
-        backup_Database_And_Config_On_Cloud()
-        with open("Password_Manager/config.json", "r+") as config_file:
-            isAutoBackupAllowed = json.load(config_file)
-            isAutoBackupAllowed['Automatic Cloud Backup'] = True
-            config_file.seek(0)
-            json.dump(isAutoBackupAllowed, config_file)
-            config_file.truncate()
+        connCheck = checkInternet()
+        if connCheck ==True:
+            backup_Database_And_Config_On_Cloud()
+            with open("Password_Manager/config.json", "r+") as config_file:
+                isAutoBackupAllowed = json.load(config_file)
+                isAutoBackupAllowed['Automatic Cloud Backup'] = True
+                config_file.seek(0)
+                json.dump(isAutoBackupAllowed, config_file)
+                config_file.truncate()
 
-            print("\n👌 All Passwords Have Been Backed Up On Cloud 📌")
-            print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up 📌")
+                print("\n👌 All Passwords Have Been Backed Up On Cloud 📌")
+                print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up 📌")
+        else:
+            print("\n❌❌❌ Internet Connection Required ❌❌❌")
+
     except Exception as e:
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 Unable To Backup On Cloud ❌❌❌")
 
@@ -179,15 +184,20 @@ def stopLocalBackup():
 
 def stopCloudBackup():
     try:
-        print("\n [*] By proceeding feather YOU WILL LOST ALL YOUR CLOUD BACKUP")
-        warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
+        connCheck = checkInternet()
+        if connCheck == True:
+            print("\n [*] By proceeding feather YOU WILL LOST ALL YOUR CLOUD BACKUP")
+            warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
 
-        if warn == "y" or warn == "yes":
-            deleteCloudBackup()
-        elif warn == "n" or warn == "no":
-            print("\n 💯 Safely Canceled")
+            if warn == "y" or warn == "yes":
+                deleteCloudBackup()
+            elif warn == "n" or warn == "no":
+                print("\n 💯 Safely Canceled")
+            else:
+                print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
         else:
-            print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
+            print("\n❌❌❌ Internet Connection Required ❌❌❌")
+
     except Exception as e:
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Stop And Delete Cloud Backup ❌❌❌")
 

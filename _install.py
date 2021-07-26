@@ -2,6 +2,7 @@ from Password_Manager.User._user_db import create_database
 from Password_Manager.User._master_encryption import passwordHasher
 import os
 import json
+import subprocess
 
 if __name__ == '__main__':
     configFile = "Password_Manager/config.json"
@@ -25,4 +26,6 @@ if __name__ == '__main__':
             print("\niThACK PassMag is already installed in your system.\n")
             exit()
 
-    print("🤞🤞🤞👌👌👌 Woo Hoo Installation Complete Successfully 🐱‍💻🐱‍🐉🐱‍🚀🎁🎏🔑")
+    subprocess.check_call(['python', '-m', 'pip', 'install', '-r', 'requirements.txt'])
+
+    print("\n🤞🤞🤞👌👌👌 Woo Hoo Installation Complete Successfully 🐱‍💻🐱‍🐉🐱‍🚀🎁🎏🔑\n")
