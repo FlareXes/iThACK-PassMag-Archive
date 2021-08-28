@@ -19,15 +19,16 @@ import os
 
 def menu():
     print('''
-1. See password
-2. Add a new password
-3. Delete existing password
-4. View existing details password
-5. Change Master Password
-6. Backup
-7. Export Passwords Into CSV
-8. Import Password From CSV
-9. Dark Web Monitoring
+1.  See password
+2.  Add a new password
+3.  Delete existing password
+4.  View existing details password
+5.  Change Master Password
+6.  Backup
+7.  Export Passwords Into CSV
+8.  Import Password From CSV
+9.  Dark Web Monitoring
+10. Start ClipSite
 Q. Exit
 ''')
     return input(": ")
@@ -272,4 +273,9 @@ def userPreferredBackup():
 
 def userPreferredRestore():
     preferredLocalRestore()
+    print("\n    🤞 Passwords Restored Successfully 🐬")
+
+
+def startClipSite():
+    os.system("start python clipPassMag.py")
     print("\n    🤞 Passwords Restored Successfully 🐬")
