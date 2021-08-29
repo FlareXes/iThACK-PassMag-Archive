@@ -7,6 +7,8 @@
 
 - I Used Unicode For Fun. So You Want Them To Visiable Then Run `_pw_manager.py` After Installation In **VsCode** Or **Windows Terminal**
 
+- This Project Still Contains Bugs Because I'm Still Working On It. But I Tried To Resolve All Issues Related To Password Security
+
 # Installation
 
 1. Run ```python _install.py```
@@ -31,3 +33,5 @@
 - Configuration Checkup After Installation *(Under Dev.)*
 
 - Check Is Your Passwords Are Shown In Data Breaches And On Dark Web
+
+- Passwords Are Never Exposed To Variable For Long Time. Accomplished By Only Using Variables In Block Scope (No Memory Leak. This Measure Has Taken For Binary Exploitition Pentesters)
