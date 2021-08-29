@@ -29,7 +29,7 @@ def menu():
 8.  Import Password From CSV
 9.  Dark Web Monitoring
 10. Start ClipSite
-Q. Exit
+Q.  Exit
 ''')
     return input(": ")
 
@@ -162,7 +162,7 @@ def cloudBackup():
                 config_file.truncate()
 
                 print("\n👌 All Passwords Have Been Backed Up On Cloud 📌")
-                print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up 📌")
+                print("\n👌 From Next Time All Passwords Automaticly Will Be Backed Up On Cloud 📌")
         else:
             print("\n❌❌❌ Internet Connection Required ❌❌❌")
 
