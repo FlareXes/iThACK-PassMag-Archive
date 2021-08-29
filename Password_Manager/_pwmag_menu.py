@@ -47,7 +47,7 @@ def backupMenu():
     7. User Preferrd Backup
     8. Restore Backup From Preferred Location
 
-    9. Setup Both Local And Cloud Backup (Unstable)
+    9. Setup Both Local And Cloud Backup (Unstable, Under Dev.)
     Q. Go Back
     ''')
     return input("    : ")
