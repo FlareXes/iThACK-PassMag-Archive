@@ -1,5 +1,5 @@
-# Note For Kalle:
-- I Hardcorded My Default Credentials For Cloud Backup So You Can Test That
+# Note For Testers:
+- I Hardcorded My Default Testing Credentials. So You Can Test That
 
 - Option 10 Allow To Copy Password On Clipboard If Present In Database When You Visit A Website. You Can Only Run This 10 Min In One Go
 
@@ -35,3 +35,6 @@
 - Check Is Your Passwords Are Shown In Data Breaches And On Dark Web
 
 - Passwords Are Never Exposed To Variable For Long Time. Accomplished By Only Using Variables In Block Scope (No Memory Leak. This Measure Has Taken For Binary Exploitition Pentesters)
+
+
+# Special Thanks To Kalle For Such A Great Idea
