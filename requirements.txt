@@ -1,29 +1,13 @@
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\Haveibeenpwned\_haveibeenpwned.py: 6,7,8
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\_pwmag_menu.py: 13,14,16
 colorama == 0.4.4
 
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\Backup\Cloud_Backup\_cloud_user_db.py: 1
-mysql_connector_python == 8.0.23
-
-# C:\Users\as808\OneDrive\Documents\GitHub\Secreat_Projects\PassMag\main.py: 3
 numpy == 1.19.5
 
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\Importpassword\_csv_password_importer.py: 1
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\User\_db_manager.py: 5
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\_pwmag_menu.py: 12
 pandas == 1.2.4
 
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\Haveibeenpwned\_haveibeenpwned.py: 9
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\User\_db_manager.py: 2
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\_pwmag_menu.py: 11
 prettytable == 2.1.0
 
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\User\_data_encryption.py: 1
 pycryptodomex == 3.10.1
 
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\_pwmag_menu.py: 15
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\clipPassMag.py: 2
 pyperclip == 1.8.1
 
-# C:\Users\as808\OneDrive\Documents\iThACK PassMag\Password_Manager\Haveibeenpwned\_haveibeenpwned.py: 2
 requests == 2.25.1
