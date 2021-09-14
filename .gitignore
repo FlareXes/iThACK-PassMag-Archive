@@ -2,3 +2,5 @@ __pycache__
 leveldb
 masterlevel
 config.json
+Config
+ProjectCopier.py
