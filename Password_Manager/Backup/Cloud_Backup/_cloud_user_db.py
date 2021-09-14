@@ -1,10 +1,16 @@
 import mysql.connector
+import json
 import os
 
-MYSQL_ADDON_DB="b5lgagcy8sxr9bhsfthg"
-MYSQL_ADDON_HOST="b5lgagcy8sxr9bhsfthg-mysql.services.clever-cloud.com"
-MYSQL_ADDON_PASSWORD="E141qszcW4yoSJKErW3i"
-MYSQL_ADDON_USER="u6pkm7onuffjmttm"
+
+with open("Password_Manager\Config\cloud_cred.json", "r") as CloudCred:
+    CLEVER_CLOUD = json.load(CloudCred)["CleverCloud"]
+
+MYSQL_ADDON_DB = CLEVER_CLOUD["MYSQL_ADDON_DB"]
+MYSQL_ADDON_HOST = CLEVER_CLOUD["MYSQL_ADDON_HOST"]
+MYSQL_ADDON_PASSWORD = CLEVER_CLOUD["MYSQL_ADDON_PASSWORD"]
+MYSQL_ADDON_USER = CLEVER_CLOUD["MYSQL_ADDON_USER"]
+
 
 def connect_cloud_server():
     connection = mysql.connector.connect(user=MYSQL_ADDON_USER, password=MYSQL_ADDON_PASSWORD, host=MYSQL_ADDON_HOST, database=MYSQL_ADDON_DB)
