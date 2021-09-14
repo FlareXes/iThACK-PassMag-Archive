@@ -1,9 +1,7 @@
 # Note For Testers:
-- I Hardcorded My Default Testing Credentials. So You Can Test That
-
 - Option 10 Allow To Copy Password On Clipboard If Present In Database When You Visit A Website. You Can Only Run This 10 Min In One Go
 
-- Only Windows Tested For Now. So Prefered OS To Run Is Windows 10
+- Compatible With Windows 10
 
 - I Used Unicode (Emoji) For Fun. So You Want Them To Visiable Then Run `_pw_manager.py` After Installation In **VsCode** Or **Windows Terminal**
 
@@ -35,6 +33,3 @@
 - Check Is Your Passwords Are Shown In Data Breaches And On Dark Web
 
 - Passwords Are Never Exposed To Variable For Long Time. Accomplished By Only Using Variables In Block Scope (No Memory Leak. This Measure Has Taken For Binary Exploitition Pentesters)
-
-
-# <center>Special Thanks To Kalle For Such A Great Idea</center>
