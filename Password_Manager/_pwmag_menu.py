@@ -5,6 +5,7 @@ from Password_Manager.User._data_encryption import encryptPassword, decryptPassw
 from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config, deleteLocalBackup, restore
 from Password_Manager.Backup.Local_Backup._preference_local_backup import preferredLocalBackup, preferredLocalRestore
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud, deleteCloudBackup
+from Password_Manager.Backup.Cloud_Backup._cloud_cred_manager import cloud_credential_setup
 from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
 from Password_Manager.Importpassword import _csv_password_importer
 from Password_Manager.Essentials.network import checkInternet
@@ -40,14 +41,15 @@ def backupMenu():
     2. Restore Backup
     3. Stop Passwords Backup
 
-    4. Cloud Backup (Useful For Sync)
-    5. Restore Cloud Backup
-    6. Stop Cloud Backup
+    4. Setup Cloud Backup
+    5. Cloud Backup (Useful For Sync)
+    6. Restore Cloud Backup
+    7. Stop Cloud Backup
 
-    7. User Preferrd Backup
-    8. Restore Backup From Preferred Location
+    8. User Preferrd Backup
+    9. Restore Backup From Preferred Location
 
-    9. Setup Both Local And Cloud Backup (Unstable, Under Dev.)
+    10. Setup Both Local And Cloud Backup (Unstable, Under Dev.)
     Q. Go Back
     ''')
     return input("    : ")
@@ -168,6 +170,17 @@ def cloudBackup():
 
     except Exception as e:
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 Unable To Backup On Cloud ❌❌❌")
+
+
+def cloudSetup():
+    if os.path.exists("Password_Manager\Config\cloud_cred.json"):
+            warn_choose = input("\nWARNING... WARNING... WARNING... Overwrite Existence Credential Files (y/n): ")
+            if warn_choose == "y" or warn_choose == "yes":
+                cloud_credential_setup()
+            else:
+                print("❌ Process Canceled ❌")
+    else:
+        cloud_credential_setup()
 
 
 
