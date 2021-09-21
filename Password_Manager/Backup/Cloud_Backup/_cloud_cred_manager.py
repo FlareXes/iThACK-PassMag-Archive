@@ -1,7 +1,9 @@
 import json
-import os
 
 def cloud_credential_setup():
+    '''
+    Setup cloud database credentials and then `iThACK PassMag` will manage that.
+    '''
     try:
         print("\n1. DATABASE\n2. HOST\n3. PASSWORD\n4. USER")
         choose = input("\n⚠  If You Have These Credentials Then Continues (y/n): ")

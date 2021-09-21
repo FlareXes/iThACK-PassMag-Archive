@@ -13,11 +13,17 @@ MYSQL_ADDON_USER = CLEVER_CLOUD["MYSQL_ADDON_USER"]
 
 
 def connect_cloud_server():
+    '''
+    Get connection to the cloud server.
+    '''
     connection = mysql.connector.connect(user=MYSQL_ADDON_USER, password=MYSQL_ADDON_PASSWORD, host=MYSQL_ADDON_HOST, database=MYSQL_ADDON_DB)
     return connection
 
 
 def create_dbtables():
+    '''
+    Create tables on the database.
+    '''
     conn = connect_cloud_server()
     cur = conn.cursor()
     cur.execute('''CREATE TABLE IF NOT EXISTS UserDataBase
