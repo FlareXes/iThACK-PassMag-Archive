@@ -291,4 +291,3 @@ def userPreferredRestore():
 
 def startClipSite():
     os.system("start python clipPassMag.py")
-    print("\n    🤞 Passwords Restored Successfully 🐬")

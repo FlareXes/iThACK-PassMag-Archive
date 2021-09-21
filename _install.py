@@ -5,6 +5,10 @@ import json
 import subprocess
 
 if __name__ == '__main__':
+    configFolder = "Password_Manager/Config"
+    if not os.path.exists(configFolder):
+        os.mkdir(configFolder)
+
     configFile = "Password_Manager/config.json"
     if not os.path.exists(configFile):
         create_database()

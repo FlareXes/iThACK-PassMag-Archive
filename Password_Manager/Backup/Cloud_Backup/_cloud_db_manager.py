@@ -1,5 +1,5 @@
 from Password_Manager.Backup.Cloud_Backup._cloud_user_db import connect_cloud_server
-
+from base64 import b64encode
 
 def storePassword(id, web_name, url, username, email, password, description):
     sqlQuery = "INSERT IGNORE INTO UserDataBase (ID, Website, URL, Username, Email, Password, Description) VALUES (%s, %s, %s, %s, %s, %s, %s)"
@@ -25,9 +25,9 @@ def storeEncryptionComponents(entryID, encryptionComponents):
 
 def storeSecretEncryption():
     with open("Password_Manager/User/masterlevel/00003.1.KEY.bin", "rb") as keyFile:
-        key = str(keyFile.read())
+        key = b64encode(keyFile.read())
     with open("Password_Manager/User/masterlevel/00003.1.SALT.bin", "rb") as saltFile:
-        salt = str(saltFile.read())
+        salt = b64encode(saltFile.read())
 
     sqlQuery = "INSERT IGNORE INTO Secret_Encryption (Identification, KeyFile, SaltFile) VALUES (%s ,%s, %s)"
     val = (1, key, salt)

@@ -5,7 +5,6 @@ from Password_Manager.Backup.Cloud_Backup._cloud_backup import cloud_Restore
 from Password_Manager._Authenticate import checkTrust
 from Password_Manager._config_checkup import checkConfigurations
 
-
 if __name__ == '__main__':
     checkConfigurations()
     checkTrust()
