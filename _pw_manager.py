@@ -1,6 +1,6 @@
 from Password_Manager._pwmag_menu import menu, backupMenu, addEntry, deleteEntry, changeMasterPassword, showPassword,\
      backup, cloudBackup, exportEntriesCsv, showEntries, checkPwnedPasswords, stopCloudBackup, stopLocalBackup, \
-         restoreLocalBackup, importCsv, userPreferredBackup, userPreferredRestore, startClipSite, cloudSetup
+         restoreLocalBackup, importCsv, userPreferredBackup, userPreferredRestore, startClipSite, cloudSetup, generatePassword
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import cloud_Restore
 from Password_Manager._Authenticate import checkTrust
 from Password_Manager._config_checkup import checkConfigurations
@@ -58,6 +58,8 @@ while True:
         checkPwnedPasswords()
     elif choice == '10':
         startClipSite()
+    elif choice == '11':
+        generatePassword()
     elif choice == 'Q' or choice == 'q':
         exit()
     else:
