@@ -9,6 +9,7 @@ from Password_Manager.Backup.Cloud_Backup._cloud_cred_manager import cloud_crede
 from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
 from Password_Manager.Importpassword import _csv_password_importer
 from Password_Manager.Essentials.network import checkInternet
+from Password_Manager.PasswordGenerator._password_generator import passwordGenerator
 from prettytable import PrettyTable
 from pandas import read_csv
 from colorama import Style
@@ -30,6 +31,7 @@ def menu():
 8.  Import Password From CSV
 9.  Dark Web Monitoring
 10. Start ClipSite
+11. Generate Secure Password
 Q.  Exit
 ''')
     return input(": ")
@@ -291,3 +293,22 @@ def userPreferredRestore():
 
 def startClipSite():
     os.system("start python clipPassMag.py")
+
+
+def generatePassword():
+    print("\n🎯 Minimum Password Length Must Be 👉 8")
+    try:
+        passLen = int(input("\nPassword Length 👉 "))
+        if passLen >= 8:
+            password = passwordGenerator(passLen)
+            pyperclip.copy(password)
+            print("\n🤞 Password is copied to clipboard 😀😀 👇")
+            print(f"\n👍 Your {passLen} digit password: ", password)
+        else:
+            password = passwordGenerator(8)
+            print("\n🤞 Password is copied to clipboard  ✔ ✔ ✔")
+            pyperclip.copy(password)
+            print("\n🎯 Minimum password length must be 👉 8")
+            print("\n👍 Your 8 digit password: ", password)
+    except Exception as e:
+        print(e)
