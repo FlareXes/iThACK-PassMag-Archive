@@ -1,4 +1,4 @@
-from random import shuffle
+from random import shuffle, choice
 import string
 import secrets
 
@@ -41,7 +41,7 @@ def passwordGenerator_Type_2(length: int) -> str:
         punct.add(secrets.choice(possibleDigits))
 
 
-    while len(digit) != eacher:
+    while len(digit) != (length - eacher*3):
         digit.add(secrets.choice(possiblePunctuations))
 
 
@@ -64,7 +64,6 @@ def getType(chr):
 
 def passwordGenerator_Type_3(length: int) -> str:
     password = list(passwordGenerator_Type_2(length))
-    print(password, '------ Original')
     temp = []
     tempvar = True
     for i in range(length):
@@ -90,7 +89,7 @@ def passwordGenerator_Type_3(length: int) -> str:
         elif lastEntryType != 'punctuation':
             password.append(secrets.choice(possiblePunctuations))
 
-    print(''.join(password))
+    return ''.join(password)
 
 
 def passwordGenerator_Type_4(length: int) -> str:
@@ -112,3 +111,8 @@ def passwordGenerator_Type_4(length: int) -> str:
             break
 
     return ''.join(password)[:length]
+
+
+def passwordGenerator(length: int):
+    return choice([passwordGenerator_Type_1(length), passwordGenerator_Type_2(length), \
+                passwordGenerator_Type_3(length), passwordGenerator_Type_4(length)])
