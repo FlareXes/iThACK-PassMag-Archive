@@ -11,6 +11,7 @@ def passwordConfiguration(length: int) -> int:
     
     return eacher, possibleLowerCase, possibleUpperCase, possibleDigits, possiblePunctuations
 
+
 def passwordGenerator_Type_1(length: int) -> str:
     eacher, possibleLowerCase, possibleUpperCase, possibleDigits, possiblePunctuations = passwordConfiguration(length)
 
@@ -47,3 +48,67 @@ def passwordGenerator_Type_2(length: int) -> str:
     characterSet = list(lower | upper | digit | punct)                       # or a.union(b)
     shuffle(characterSet)
     return ''.join(characterSet)
+
+
+def getType(chr):
+    eacher, possibleLowerCase, possibleUpperCase, possibleDigits, possiblePunctuations = passwordConfiguration(0)
+    if chr in possibleLowerCase:
+        return 'lowercase'
+    elif chr in possibleUpperCase:
+        return 'uppercase'
+    elif chr in possibleDigits:
+        return 'digit'
+    elif chr in possiblePunctuations:
+        return 'punctuation'
+
+
+def passwordGenerator_Type_3(length: int) -> str:
+    password = list(passwordGenerator_Type_2(length))
+    print(password, '------ Original')
+    temp = []
+    tempvar = True
+    for i in range(length):
+        try:
+            if getType(password[i]) == getType(password[i+1]):
+                temp.append(password[i])
+                password.remove(password[i])
+        except:
+            pass
+
+    eacher, possibleLowerCase, possibleUpperCase, possibleDigits, possiblePunctuations = passwordConfiguration(0)
+    for i in range(len(temp)):
+        lastEntryType = getType(password[-1])
+        if lastEntryType != 'lowercase':
+            password.append(secrets.choice(possibleLowerCase))
+
+        elif lastEntryType != 'uppercase':
+            password.append(secrets.choice(possibleUpperCase))
+        
+        elif lastEntryType != 'digit':
+            password.append(secrets.choice(possibleDigits))
+        
+        elif lastEntryType != 'punctuation':
+            password.append(secrets.choice(possiblePunctuations))
+
+    print(''.join(password))
+
+
+def passwordGenerator_Type_4(length: int) -> str:
+    eacher, possibleLowerCase, possibleUpperCase, possibleDigits, possiblePunctuations = passwordConfiguration(length)
+    possibleCharecters = possibleLowerCase + possibleUpperCase + possibleDigits + possiblePunctuations
+    possibleCharecterSet = list()
+
+    for i in range(len(possibleCharecters)):
+        secChar = secrets.choice(possibleCharecters)
+        possibleCharecterSet.append(secChar)
+        possibleCharecters = possibleCharecters.replace(secChar, '')
+    
+    password = []
+    for i in range(len(possibleCharecterSet)):
+        try:
+            if getType(possibleCharecterSet[i]) != getType(possibleCharecterSet[i+1]):
+                password.append(possibleCharecterSet[i])
+        except:
+            break
+
+    return ''.join(password)[:length]
