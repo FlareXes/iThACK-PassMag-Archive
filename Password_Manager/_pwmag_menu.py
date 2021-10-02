@@ -242,7 +242,6 @@ def changeMasterPassword():
 
 def exportEntriesCsv():
     exportPasswords()
-    print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
 
 
 def checkPwnedPasswords():
