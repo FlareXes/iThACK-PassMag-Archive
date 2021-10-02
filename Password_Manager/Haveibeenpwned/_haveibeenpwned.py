@@ -23,7 +23,7 @@ def getPasswords():
 
     ExportEntries = []
 
-    for i in range(0, len(rows_2)):
+    for i in range(0, len(rows_1)):
         encryptionComponents = rows_1[i][3]+str(rows_2[i][0])
         cipher_text = encryptionComponents[:-168]
         salt = encryptionComponents[-168:-48]
@@ -42,7 +42,7 @@ def haveibeenpwned():
     for entry in ExportEntries:
         password = entry[3]
         hash_5 = (sha1(password.encode('utf-8')).hexdigest()).upper()
-        response = requests.get(f'https://api.pwnedpasswords.com/range/{hash_5[0:5]}')
+        response = requests.get(f'https://api.pwnedpasswords.com/range/{hash_5[0:5]}', headers={'Add-Padding':'true'})
         result = (response.text).find(hash_5[5:])
         if result != -1:
             results.append(entry[0:3])

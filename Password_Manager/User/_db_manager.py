@@ -176,6 +176,7 @@ def exportPasswords():
         df = pd.DataFrame(ExportEntries, columns=["ID", "Website", "URL", "Username", "Email", "Password", "Description"])
         df.to_csv("export.csv", index=False)
         connection.close()
+        print("\nSuccessfully🤞 Exported Into export.csv ✔ ✔ ✔")
     except Exception as e:
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 Can't Export Passwords ❌❌❌")
 
