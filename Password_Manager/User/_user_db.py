@@ -1,6 +1,7 @@
 import sqlite3
 import os
 
+
 def create_dbtables():
     try:
         conn = sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
@@ -13,7 +14,6 @@ def create_dbtables():
             Email              CHAR(50)         NOT NULL,
             Password           TEXT(200)        NOT NULL,
             Description        TEXT(5000));''')
-
 
         cur.execute('''CREATE TABLE IF NOT EXISTS UserDataBase_Encryption
             (Identification    INTEGER          Not Null,
@@ -45,7 +45,7 @@ def connect_database():
         return connection
     except Exception as e:
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 UNABLE TO ESTABLISH DATABASE CONNECTION ❌❌❌")
-    
+
 
 if __name__ == '__main__':
     create_database()
