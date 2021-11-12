@@ -1,9 +1,11 @@
-from Password_Manager.Backup.Cloud_Backup._cloud_db_manager import storePassword, storeEncryptionComponents,storeSecretEncryption
+from Password_Manager.Backup.Cloud_Backup._cloud_db_manager import storePassword, storeEncryptionComponents, \
+    storeSecretEncryption
 from Password_Manager.Backup.Cloud_Backup._cloud_user_db import connect_cloud_server
 from Password_Manager.User._user_db import connect_database
 from base64 import b64decode
 import sqlite3
 import json
+
 
 def connect_local_database():
     connection = sqlite3.connect(r"Password_Manager/User/leveldb/user.db")
@@ -17,7 +19,7 @@ def backup_Database_And_Config_On_Cloud():
     user first have to setup cloud database credentials.
     '''
     print("\n🐬🐬🐬 Backing Up On Cloud 🐬🐬🐬")
-    
+
     sqlQuery_1 = "SELECT * FROM UserDataBase"
     connection = connect_local_database()
     mycursor = connection.cursor()
@@ -80,12 +82,12 @@ def cloud_Restore():
     sqlQuery_1 = "INSERT OR IGNORE INTO UserDataBase (ID, Website, URL, Username, Email, Password, Description) VALUES (?, ?, ?, ?, ?, ?, ?)"
     mycursor.executemany(sqlQuery_1, entryTuple_1)
 
-    sqlQuery_2 = "INSERT OR IGNORE INTO UserDataBase_Encryption (Identification, Encryption) VALUES (?, ?)" # https://stackoverflow.com/questions/12105198/sqlite-how-to-get-insert-or-ignore-to-work
+    sqlQuery_2 = "INSERT OR IGNORE INTO UserDataBase_Encryption (Identification, Encryption) VALUES (?, ?)"  # https://stackoverflow.com/questions/12105198/sqlite-how-to-get-insert-or-ignore-to-work
     mycursor.executemany(sqlQuery_2, entryTuple_2)
     localConnection.commit()
     localConnection.close()
 
-    key =  b64decode(entryTuple_3[0][1])
+    key = b64decode(entryTuple_3[0][1])
     salt = b64decode(entryTuple_3[0][2])
     with open("Password_Manager/User/masterlevel/00003.1.KEY.bin", "wb") as saltfile:
         saltfile.write(key)

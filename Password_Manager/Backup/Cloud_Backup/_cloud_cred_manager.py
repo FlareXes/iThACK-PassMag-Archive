@@ -1,5 +1,8 @@
 import json
 
+from Password_Manager.Backup.Cloud_Backup._cloud_user_db import create_dbtables
+
+
 def cloud_credential_setup():
     '''
     Setup cloud database credentials and then `iThACK PassMag` will manage that.
@@ -27,6 +30,7 @@ def cloud_credential_setup():
                         }
                     with open("Password_Manager\Config\cloud_cred.json", "w", encoding ="utf-8") as file:
                         json.dump(cred_dict, file)
+                    create_dbtables()
                     print("\n Successfully Completed ✌ 👌")
                     break
                 else:
