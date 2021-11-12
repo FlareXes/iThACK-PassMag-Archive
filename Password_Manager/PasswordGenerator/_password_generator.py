@@ -137,17 +137,21 @@ def passwordGenerator_Type_5(length: int, allowed_types: Optional[Dict[str, bool
 
 
 def passwordGenerator(length: int, allowed_types: Optional[Dict[str, bool]] = None) -> str:
-    if all(allowed_types.values()):
-        if length <= 43:
-            return choice(
-                [passwordGenerator_Type_1(length), passwordGenerator_Type_2(length), passwordGenerator_Type_3(length),
-                 passwordGenerator_Type_4(length)])
-        elif length <= 60:
-            return choice([passwordGenerator_Type_1(length), passwordGenerator_Type_4(length)])
-        else:
-            return passwordGenerator_Type_1(length)
+    # try:
+    #     if all(allowed_types.values()):
+    if length <= 43:
+        return choice(
+            [passwordGenerator_Type_1(length), passwordGenerator_Type_2(length), passwordGenerator_Type_3(length),
+             passwordGenerator_Type_4(length)])
+    elif length <= 60:
+        return choice([passwordGenerator_Type_1(length), passwordGenerator_Type_4(length)])
     else:
-        passwordGenerator_Type_5(length, allowed_types)
+        return passwordGenerator_Type_1(length)
+    #     else:
+    #         passwordGenerator_Type_5(length, allowed_types)
+    # except:
+    #     pass
 
-passwordGenerator_Type_5(14, allowed_types = {'lowercase': True, 'uppercase': True, 'digit': True, 'punctuation': True})
-# passwordGenerator_Type_5(14, allowed_types = {'lowercase': False, 'uppercase': False, 'digit': False, 'punctuation': False})
+# print(passwordGenerator_Type_5(20, allowed_types = {'lowercase': False, 'uppercase': False, 'digit': True, 'punctuation': True}))
+# print(passwordGenerator_Type_5(14, allowed_types = {'lowercase': False, 'uppercase': False, 'digit': False, 'punctuation': False}))
+# print(passwordGenerator(16))

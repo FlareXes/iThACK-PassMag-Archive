@@ -171,6 +171,7 @@ def cloudBackup():
             print("\n❌❌❌ Internet Connection Required ❌❌❌")
 
     except Exception as e:
+        print(e)
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 Unable To Backup On Cloud ❌❌❌")
 
 
