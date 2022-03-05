@@ -2,14 +2,14 @@ colorama==0.4.4
 
 mysql-connector-python==8.0.28
 
-numpy==1.19.5
+numpy==1.22.2
 
-pandas==1.2.4
+pandas==1.4.1
 
-prettytable==2.1.0
+prettytable==3.1.1
 
-pycryptodomex==3.10.1
+pycryptodomex==3.14.1
 
-pyperclip==1.8.1
+pyperclip==1.8.2
 
-requests==2.25.1
+requests==2.27.1
