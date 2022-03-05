@@ -7,7 +7,6 @@ import colorama
 from colorama import Fore
 from colorama import Style
 from prettytable import PrettyTable
-import os
 
 def getPasswords():
     masterPassword = checkTrust()
@@ -39,15 +38,19 @@ def haveibeenpwned():
     ExportEntries = getPasswords()
     print("\n[+] Please Wait It May Take Time ⌛⏳")
     results = []
-    for entry in ExportEntries:
-        password = entry[3]
-        hash_5 = (sha1(password.encode('utf-8')).hexdigest()).upper()
-        response = requests.get(f'https://api.pwnedpasswords.com/range/{hash_5[0:5]}', headers={'Add-Padding':'true'})
-        result = (response.text).find(hash_5[5:])
-        if result != -1:
-            results.append(entry[0:3])
 
-    return results
+    if len(ExportEntries) != 0:
+        for entry in ExportEntries:
+            password = entry[3]
+            hash_5 = (sha1(password.encode('utf-8')).hexdigest()).upper()
+            response = requests.get(f'https://api.pwnedpasswords.com/range/{hash_5[0:5]}', headers={'Add-Padding':'true'})
+            result = (response.text).find(hash_5[5:])
+            if result != -1:
+                results.append(entry[0:3])
+        return results
+    else:
+        print("\nYou don't have any password to check. First feed me some info 🤳😃😜")
+        return results
 
 
 def managePwnedPasswords():

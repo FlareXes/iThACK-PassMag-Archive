@@ -100,17 +100,19 @@ def addEntry():
 
 def deleteEntry():
     checkTrust()
-    showWebsites()
-    acc_id = input("\n [*] Please Enter Your Account ID To Delete: ")
-    warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
+    if showWebsites() != 0:
+        acc_id = input("\n [*] Please Enter Your Account ID To Delete: ")
+        warn = input("\n ⚠  Are you sure you want to delete (y/n): ")
 
-    if warn == "y" or warn == "yes":
-        deletePassword(acc_id)
-        showWebsites()
-    elif warn == "n" or warn == "no":
-        print("\n 💯 Safely Canceled")
+        if warn == "y" or warn == "yes":
+            deletePassword(acc_id)
+            showWebsites()
+        elif warn == "n" or warn == "no":
+            print("\n 💯 Safely Canceled")
+        else:
+            print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
     else:
-        print("\n 👋👋👋👋👋👋👋👋👋 Invalid Input!! Get Out 👉 👋👋👋👋👋👋👋👋👋")
+        print("\nNothing to delete. First feed me some info 🤳😃😜")
 
 
 def showPassword():
@@ -225,17 +227,23 @@ def restoreLocalBackup():
 
 def changeMasterPassword():
     try:
-        print("\nCurrent Password (Verify Yourself) 📌\n")
+        # print("\nCurrent Password (Verify Yourself) 📌\n")
         oldMasterPassword = checkTrust()
         newMasterPassword = input("\n[+] New Enter Master Password: ")
-        updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
-        passwordHasher(newMasterPassword)
-        if os.path.exists("config.json"):
-            with open("config.json", "r") as config_file:
-                isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
-            if isAutoBackupAllowed == True:
-                backup()
-        print("\nPassword Has Changed Successfully ✔ 🤞")
+        conf_new_master_password = input("\n[+] Confirm New Password: ")
+
+        if conf_new_master_password == newMasterPassword:
+            updateDatabaseWithNewMasterPassword(oldMasterPassword, newMasterPassword)
+            passwordHasher(newMasterPassword)
+            if os.path.exists("config.json"):
+                with open("config.json", "r") as config_file:
+                    isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
+                if isAutoBackupAllowed == True:
+                    backup()
+            print("\nPassword Has Changed Successfully ✔ 🤞")
+        else:
+            print("\n[-] Process Unsuccessful. Password Didn't Matched")
+
     except Exception as e:
         print("\n❌❌❌ [-] Process Unsuccessful. Unable To Change Master Password ❌❌❌")
 
@@ -250,7 +258,7 @@ def checkPwnedPasswords():
         connCheck = checkInternet()
         if connCheck == True:
             result = managePwnedPasswords()
-            print(result)
+            if result != None: print(result)
         else:
             print("\n❌❌❌ Internet Connection Required ❌❌❌")
     except Exception as e:
@@ -298,7 +306,7 @@ def startClipSite():
 def generatePassword():
     print("\n🎯 Minimum Password Length Must Be 👉 8")
     try:
-        passLen = int(input("\nPassword Length 👉 "))
+        passLen = int(str(input("\nPassword Length 👉 ")))
         if passLen >= 8:
             password = passwordGenerator(passLen)
             pyperclip.copy(password)
@@ -308,7 +316,11 @@ def generatePassword():
             password = passwordGenerator(8)
             print("\n🤞 Password is copied to clipboard  ✔ ✔ ✔")
             pyperclip.copy(password)
-            print("\n🎯 Minimum password length must be 👉 8")
+            print("\n👍 Your 8 digit password: ", password)
+    except ValueError:
+            password = passwordGenerator(8)
+            print("\n🤞 Password is copied to clipboard  ✔ ✔ ✔")
+            pyperclip.copy(password)
             print("\n👍 Your 8 digit password: ", password)
     except Exception as e:
         print(e)
