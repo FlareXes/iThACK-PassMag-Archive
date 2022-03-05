@@ -24,7 +24,7 @@ def storePassword(web_name, url, username, email, password, description):
 
 
 
-def deletePassword(acc_Id):
+def deletePassword(acc_Id: str):
     try:
         connection = connect_database()
         mycursor = connection.cursor()
