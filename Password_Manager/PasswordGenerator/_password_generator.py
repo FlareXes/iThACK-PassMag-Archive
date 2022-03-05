@@ -1,10 +1,10 @@
 from random import shuffle, choice
 import string
 import secrets
-from typing import Optional, Dict
+from typing import Optional, Dict, Tuple
 
 
-def passwordConfiguration(length: int) -> tuple[int, str, str, str, str]:
+def passwordConfiguration(length: int) -> Tuple[int, str, str, str, str]:
     eacher = int(length / 4)
     possibleLowerCase = string.ascii_lowercase
     possibleUpperCase = string.ascii_uppercase

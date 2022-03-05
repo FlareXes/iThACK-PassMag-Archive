@@ -1,5 +1,6 @@
 import os
 import json
+from typing import Dict
 from Password_Manager.Backup.Local_Backup import _local_backup
 from Password_Manager.Backup.Local_Backup import _preference_local_backup
 from Password_Manager.User._user_db import create_database
@@ -10,7 +11,7 @@ DATABASE = "Password_Manager/User/leveldb/user.db"
 CONFIG = "Password_Manager/config.json"
 
 
-def available_files() -> dict[str, bool]:
+def available_files() -> Dict[str, bool]:
     files_available = {'salt': False, 'key': False, 'database': False, 'config': False}
     if os.path.exists(SALT):
         files_available['salt'] = True
