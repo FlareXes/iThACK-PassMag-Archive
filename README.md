@@ -1,16 +1,33 @@
-# Note For Testers:
-- Option 10 Allow To Copy Password On Clipboard If Present In Database When You Visit A Website. You Can Only Run This 10 Min In One Go
+iThACK PassMag is a Python-based CLI Password Manager. That Uses Strong Encryption To Protect Your Passwords And Provides Some Amazing Functionalities For Which Famous Password Managers Do Charge (But Their Security Is Also Test. Of Course, We're Not Comparing).
 
-- Compatible With Windows 10
+**You Have To Be Techy Because *iThACK PassMag* Provides Transparency And Control On Your Own Security And Privacy**
 
-- I Used Unicode (Emoji) For Fun. So You Want Them To Visiable Then Run `_pw_manager.py` After Installation In **VsCode** Or **Windows Terminal**
+> **FireFlareDB** Doesn't Take Any Responsibility For Any Sort Of Potential Damage.
 
-- This Project Still Contains Bugs Because I'm Still Working On It. But I Tried To Resolve All Issues Related To Password Security
 
 # Installation
 
-1. Run ```python _install.py```
-2. To Open iThACK PassMag Run ```python _pw_manager.py```
+## Windows Installation
+1. Run ```python _setup.py```
+2. To Start iThACK PassMag - Run ```python _pw_manager.py```
+
+## Linux Installation (Debian / Ubuntu)
+1. Run ```sudo apt-get install python3-tk```
+2. Then To Install Dependencies, ```python _setup.py```
+3. To Start iThACK PassMag - Run ```python _pw_manager.py```
+
+# Python Virtual Environment Installation
+
+If You Don't Wanna Install Dependencies Then Just Run `python _pw_manager.py` To Run Application, Step Below For That 👇️
+
+## Windows Installation
+1. Run ```. venv/bin/Activate.ps1```
+2. To Start iThACK PassMag - Run ```python _pw_manager.py```
+
+## Linux Installation (Debian / Ubuntu)
+1. Run ```sudo apt-get install python3-tk```
+2. Then To Install Dependencies, ```. venv/bin/activate``` or ```source venv/bin/activate```
+3. To Start iThACK PassMag - Run ```python _pw_manager.py```
 
 # Warnings
 
@@ -26,10 +43,6 @@
 
 - Import And Export Passwords Into CSV
 
-- Auto Clipboard Password Copier *(Option 10)*
+- Auto Clipboard Password Copier *(Option 10 Only For Windows 🤔️)*.
 
-- Configuration Checkup After Installation *(Under Dev.)*
-
-- Check Is Your Passwords Are Shown In Data Breaches And On Dark Web
-
-- Passwords Are Never Exposed To Variable For Long Time. Accomplished By Only Using Variables In Block Scope (No Memory Leak. This Measure Has Taken For Binary Exploitition Pentesters)
+- Check If, Your Passwords Were Shown In Any Data Breaches And On Dark Web
