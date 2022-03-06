@@ -15,7 +15,7 @@ try:
         dnsLogs = str(subprocess.check_output(['ipconfig', '/displaydns'], shell=False))
 
         for website in websites:
-            if website[1] in dnsLogs:
+            if website[1].lower() in dnsLogs:
                 encryptionComponents = getPasswordComponents(website[0])
                 cipher_text = encryptionComponents[:-168]
                 salt = encryptionComponents[-168:-48]
