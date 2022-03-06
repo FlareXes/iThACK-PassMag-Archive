@@ -1,28 +1,35 @@
+from Password_Manager.Essentials.utilities import is_windows, create_dir
 from pathlib import Path
 import shutil
 import glob
 import json
 import os
 
-defaultBackedUp_key_location = "C:\\ProgramData\\iThACK Passmag\\00003.1.KEY.bin"
-defaultBackedUp_salt_location = "C:\\ProgramData\\iThACK Passmag\\00003.1.SALT.bin"
-defaultBackedUp_database_location = "C:\\ProgramData\\iThACK Passmag\\user.db"
-defaultBackupPath="C:\\ProgramData\\iThACK PassMag"
+if is_windows():
+    defaultBackupPath = Path("C:/ProgramData/iThACK-PassMag")
+    defaultBackedUp_key_location = defaultBackupPath / "00003.1.KEY.bin"
+    defaultBackedUp_salt_location = defaultBackupPath / "00003.1.SALT.bin"
+    defaultBackedUp_database_location = defaultBackupPath / "user.db"
+else:
+    defaultBackupPath = Path("/var/lib/iThACK-PassMag")
+    defaultBackedUp_key_location = defaultBackupPath / "00003.1.KEY.bin"
+    defaultBackedUp_salt_location = defaultBackupPath / "00003.1.SALT.bin"
+    defaultBackedUp_database_location = defaultBackupPath / "user.db"
 
 def backup_Database_And_Config(backupPath=defaultBackupPath):
     try:
         # create path, if it doesn't exist'
         location = Path(backupPath)
-        location.mkdir(parents=True, exist_ok=True)
-        
-        # copy database from leveldb
+        create_dir(location)
+
+        # copy *level files to backup location
         shutil.copy("Password_Manager/User/leveldb/user.db", location)
-        
-        # copy all file from masterlevel
         files_to_backup = glob.glob("Password_Manager/User/masterlevel/*.bin")
         for filename in files_to_backup:
             shutil.copy(filename, location)
+    
     except Exception as e:
+        print(e)
         print("\n❌❌❌ ErRoR OcCuRrEd 👉 Unable To Backup Passwords And Configurations ❌❌❌")
 
 

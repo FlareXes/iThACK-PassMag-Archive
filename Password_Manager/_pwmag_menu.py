@@ -227,7 +227,6 @@ def restoreLocalBackup():
 
 def changeMasterPassword():
     try:
-        # print("\nCurrent Password (Verify Yourself) 📌\n")
         oldMasterPassword = checkTrust()
         newMasterPassword = input("\n[+] New Enter Master Password: ")
         conf_new_master_password = input("\n[+] Confirm New Password: ")
@@ -266,25 +265,22 @@ def checkPwnedPasswords():
 
 
 def importCsv():
-    try:
-        from tkinter import Tk
-        from tkinter.filedialog import askopenfile
+    from tkinter import Tk
+    from tkinter.filedialog import askopenfile
 
-        Tk().withdraw()
-        filename = askopenfile(title='Import CSV').name
-        
-        if filename.endswith(".csv"):
-            print(filename)
-            csv = read_csv('export.csv')
-            cpCSV = csv.copy()
-            cpCSV.fillna("", inplace=True)
-            del(csv)
-            _csv_password_importer.storeCsv(cpCSV)
-            print("\n✌✌✌ Passwords Imported Successfully ✌✌✌")
-        else:
-            print("\n🤔 File Must Be CSV!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
-    except Exception as e:
-        print("\n❌❌❌ Process Unsuccessful 🎐🎑📍 Can't Import CSV ❌❌❌")
+    Tk().withdraw()
+    filename = askopenfile(title='Import CSV').name
+    
+    if filename.endswith(".csv"):
+        print(filename)
+        csv = read_csv('export.csv')
+        cpCSV = csv.copy()
+        cpCSV.fillna("", inplace=True)
+        del(csv)
+        _csv_password_importer.storeCsv(cpCSV)
+        print("\n✌✌✌ Passwords Imported Successfully ✌✌✌")
+    else:
+        print("\n🤔 File Must Be CSV!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
 
 
 def userPreferredBackup():
