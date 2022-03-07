@@ -1,21 +1,21 @@
-from Password_Manager.User._db_manager import storePassword, deletePassword, showWebsites, storeEncryptionComponents, getPasswordComponents, updateDatabaseWithNewMasterPassword, exportPasswords
+from Password_Manager.User._db_manager import storePassword, deletePassword, showWebsites, storeEncryptionComponents, getPasswordComponents, updateDatabaseWithNewMasterPassword
 from Password_Manager.User._master_encryption import passwordHasher
-from Password_Manager._Authenticate import checkTrust, verifyMasterPassword
+from Password_Manager._Authenticate import checkTrust
 from Password_Manager.User._data_encryption import encryptPassword, decryptPassword
 from Password_Manager.Backup.Local_Backup._local_backup import backup_Database_And_Config, deleteLocalBackup, restore
 from Password_Manager.Backup.Local_Backup._preference_local_backup import preferredLocalBackup, preferredLocalRestore
 from Password_Manager.Backup.Cloud_Backup._cloud_backup import backup_Database_And_Config_On_Cloud, deleteCloudBackup
 from Password_Manager.Backup.Cloud_Backup._cloud_cred_manager import cloud_credential_setup
 from Password_Manager.Haveibeenpwned._haveibeenpwned import managePwnedPasswords
-from Password_Manager.Importpassword import _csv_password_importer
+from Password_Manager.Advance_Features import _csv_password_import, _csv_password_export
 from Password_Manager.Essentials.network import checkInternet
 from Password_Manager.PasswordGenerator._password_generator import passwordGenerator
+from Password_Manager.Essentials.utilities import ask_directory_location, ask_file_location
 from prettytable import PrettyTable
 from pandas import read_csv
 from colorama import Style
 from colorama import Fore
 import pyperclip
-import colorama
 import json
 import os
 
@@ -247,11 +247,6 @@ def changeMasterPassword():
         print("\n❌❌❌ [-] Process Unsuccessful. Unable To Change Master Password ❌❌❌")
 
 
-
-def exportEntriesCsv():
-    exportPasswords()
-
-
 def checkPwnedPasswords():
     try:
         connCheck = checkInternet()
@@ -264,20 +259,19 @@ def checkPwnedPasswords():
         print("\n❌❌❌ [-] Process Unsuccessful. Unable To Check Pwned Passwords ❌❌❌")
 
 
-def importCsv():
-    from tkinter import Tk
-    from tkinter.filedialog import askopenfile
+def exportEntriesCsv():
+    export_location = ask_directory_location()
+    print(f"\n[+] Export Location: {export_location}/iThACK-PassMag-export.csv")
+    _csv_password_export.export_tocsv(export_location)
+    print("\nSuccessfully🤞 Exported All Passwords Into export.csv")
 
-    Tk().withdraw()
-    filename = askopenfile(title='Import CSV').name
-    
-    if filename.endswith(".csv"):
-        print(filename)
-        csv = read_csv('export.csv')
-        cpCSV = csv.copy()
-        cpCSV.fillna("", inplace=True)
-        del(csv)
-        _csv_password_importer.storeCsv(cpCSV)
+
+def importCsv():
+    filelocation = ask_file_location()
+    if filelocation.endswith(".csv"):
+        csv = read_csv(filelocation)
+        csv.fillna("", inplace=True)
+        _csv_password_import.storeCsv(csv)
         print("\n✌✌✌ Passwords Imported Successfully ✌✌✌")
     else:
         print("\n🤔 File Must Be CSV!! Get Out 👉 👋👋👋👋👋👋👋👋👋\n")
