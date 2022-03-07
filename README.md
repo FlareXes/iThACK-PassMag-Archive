@@ -1,4 +1,4 @@
-iThACK PassMag is a Python-based CLI Password Manager. That Uses Strong Encryption To Protect Your Passwords And Provides Some Amazing Functionalities For Which Famous Password Managers Do Charge (But Their Security Is Also Test. Of Course, We're Not Comparing).
+iThACK PassMag is a Python-based CLI Password Manager. That Uses Strong Encryption To Protect Your Passwords And Provides Some Amazing Functionalities For Which Famous Password Managers Do Charge (But Their Security Is Also Tested. Of Course, We're Not Comparing).
 
 **You Have To Be Techy Because *iThACK PassMag* Provides Transparency And Control On Your Own Security And Privacy**
 
