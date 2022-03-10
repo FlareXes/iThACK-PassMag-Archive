@@ -1,12 +1,13 @@
 import hashlib
 import secrets
+from getpass import getpass
 
 
 def checkTrust():
     try:
         masterPasswordAttempt = 0
         while masterPasswordAttempt <= 2:
-            masterPassword = input("\nVerify Yourself To Continue (Master Password)📌 : ")
+            masterPassword = getpass("\nVerify Yourself To Continue (Master Password)📌 : ")
             if verifyMasterPassword(masterPassword) == True:
                 break
             else:
