@@ -10,7 +10,7 @@ def preferredLocalBackup():
     filename = askdirectory(title='Export iThACK PassMag Backup') + '/iThACK PassMag'
     backup_Database_And_Config(backupPath=filename)
     
-    with open("Password_Manager/config.json", "r+") as config_file:
+    with open("Password_Manager/Config/config.json", "r+") as config_file:
         backupConfig = json.load(config_file)
         backupConfig['User Preferred Local Backup'] = True
         config_file.seek(0)
