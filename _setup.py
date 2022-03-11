@@ -25,16 +25,11 @@ def warning():
             print("\nInvalid Input. Process Canceled !")
 
 def remove_tree():
-    remove_trees = ("Password_Manager/Config", "Password_Manager/config.json", 
-                    "Password_Manager/User/leveldb", "Password_Manager/User/masterlevel")
+    remove_trees = ("Password_Manager/User/leveldb", "Password_Manager/User/masterlevel")
     for location in remove_trees: shutil.rmtree(location, ignore_errors=True)
 
 if __name__ == '__main__':
     warning()
-
-    try:
-        os.mkdir("Password_Manager/Config")
-    except: pass
 
     create_database()
     passwordHasher("don't use weak master password")

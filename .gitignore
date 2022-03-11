@@ -2,6 +2,6 @@ __pycache__
 leveldb
 masterlevel
 config.json
-Config
+cloud_cred.json
 ProjectCopier.py
 test.py
