@@ -8,7 +8,7 @@ from Password_Manager.User._user_db import create_database
 SALT = "Password_Manager/User/masterlevel/00003.1.SALT.bin"
 KEY = "Password_Manager/User/masterlevel/00003.1.KEY.bin"
 DATABASE = "Password_Manager/User/leveldb/user.db"
-CONFIG = "Password_Manager/config.json"
+CONFIG = "Password_Manager/Config/config.json"
 
 
 def available_files() -> Dict[str, bool]:
@@ -26,45 +26,42 @@ def available_files() -> Dict[str, bool]:
 
 class checkBackup:
     def isLocalBackupAllowed(self):
-        with open("Password_Manager/config.json", "r") as config_file:
+        with open("Password_Manager/Config/config.json", "r") as config_file:
             isAutoBackupAllowed = json.load(config_file)['Automatic Backup']
         return isAutoBackupAllowed
 
     def isCloudBackupAllowed(self):
-        with open("Password_Manager/config.json", "r") as config_file:
+        with open("Password_Manager/Config/config.json", "r") as config_file:
             isAutoBackupAllowed = json.load(config_file)['Automatic Cloud Backup']
         return isAutoBackupAllowed
 
     def isPreferredBackupAllowed(self):
-        with open("Password_Manager/config.json", "r") as config_file:
+        with open("Password_Manager/Config/config.json", "r") as config_file:
             isPreferredBackupAllowed = json.load(config_file)['User Preferred Local Backup']
         return isPreferredBackupAllowed
 
 
 def checkConfigurations():
-    userSalt = "Password_Manager/User/masterlevel/00003.1.SALT.bin"
-    userKey = "Password_Manager/User/masterlevel/00003.1.KEY.bin"
-    userDatabase = "Password_Manager/User/leveldb/user.db"
-    configFile = "Password_Manager/config.json"
+    check = checkBackup()
+    files = available_files()
 
-    if not os.path.exists(configFile):
+    if not os.path.exists(CONFIG):
         data = {
             'Installation': True,
             'Automatic Backup': False,
             'Automatic Cloud Backup': False,
             'User Preferred Local Backup': False,
         }
-        with open("Password_Manager/config.json", "w") as config_file:
+        with open(CONFIG, "w") as config_file:
             json.dump(data, config_file)
 
-    check = checkBackup()
-    files = available_files()
-
-    if files['salt'] and files['key'] and files['database'] == False:
+    # if files['salt'] and files['key'] and files['database'] == False:
+    if files['database'] == False and files['key'] and files['salt']:
         create_database()
         print('\nPassword Database Not Found!!! \n'
               'You Have Lost Your All Passwords, So A New Database Has Been Created.\n'
-              'Master Password Is Still Same\n')
+              'Master Password Is Still Same.\n')
+
     elif not (files['salt'] and files['key'] and files['database']):
         isAutoBackupAllowed = check.isLocalBackupAllowed()
         isPreferredBackupAllowed = check.isPreferredBackupAllowed()
@@ -81,16 +78,15 @@ def checkConfigurations():
             else:
                 print("\n❌❌❌ Invalid Input!! ❌❌❌")
                 exit()
-
-        if isPreferredBackupAllowed == True:
+        elif isPreferredBackupAllowed == True:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('\t\tOne More Chance 🎏🎏🎏')
-            print('\n✌ ✌ ✌ User Preference Enabled ✌ ✌ ✌')
-            print('''\nWe found that you\'ve backed up for file under User Preference Mode. 
-            \nSo, you can import that iThACK PassMag Backup Directory.''')
-            print("\n⚠ Configuration File Not Found ⁉\n")
+            print("EPR Raps\t\tOne More Chance")
+            print("\n    User Preference Enabled")
+            print("""\nWe have found that you\'ve backup under User Preference Mode. 
+            \nSo, you can import that iThACK PassMag Backup Directory.""")
+            print("\n[*] Configuration File Not Found\n")
 
-            askToRestore = input("Restore Backed Up Configuration (y/n): ")
+            askToRestore = input("Restore Backup Configurations (y/n): ")
             if askToRestore == "y" or askToRestore == "yes":
                 _preference_local_backup.preferredLocalRestore()
             elif askToRestore == "n" or askToRestore == "no":
@@ -101,8 +97,8 @@ def checkConfigurations():
                 exit()
         else:
             print('''\nYou Completely Messed Up! With Our Software.
-        Therefore You Have Lost All Your Passwords Because Their Was Backup Set Up.
-        You Must Need You Reinstall This Software. Just Run "python _setup.py" Without Quotes.
-        And Be Aware Next Time, Don't Forget To Backup Your Passwords With iThACK PassMag Functionality.\n
-        Best Wishes From Whole iThACK PassMag Team. Hmmm...Also Sorry For Inconvenience And Your Lose.\n''')
+Therefore You Have Lost All Your Passwords Because Their Was Backup Set Up.
+You Must Need You Reinstall This Software. Just Run "python _setup.py" Without Quotes.
+And Be Aware Next Time, Don't Forget To Backup Your Passwords With iThACK PassMag Functionality.\n
+Best Wishes From Whole iThACK PassMag Team. Hmmm...Also Sorry For Inconvenience And Your Lose.\n''')
             exit()

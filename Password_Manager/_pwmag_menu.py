@@ -144,7 +144,7 @@ def showEntries():
 
 def backup():
     backup_Database_And_Config()
-    with open("Password_Manager/config.json", "r+") as config_file:
+    with open("Password_Manager/Config/config.json", "r+") as config_file:
         isAutoBackupAllowed = json.load(config_file)
         isAutoBackupAllowed['Automatic Backup'] = True
         config_file.seek(0)
@@ -160,7 +160,7 @@ def cloudBackup():
         connCheck = checkInternet()
         if connCheck ==True:
             backup_Database_And_Config_On_Cloud()
-            with open("Password_Manager/config.json", "r+") as config_file:
+            with open("Password_Manager/Config/config.json", "r+") as config_file:
                 isAutoBackupAllowed = json.load(config_file)
                 isAutoBackupAllowed['Automatic Cloud Backup'] = True
                 config_file.seek(0)
