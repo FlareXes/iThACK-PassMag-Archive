@@ -1,35 +1,63 @@
+from distutils.command.config import config
 from Password_Manager.User._user_db import create_database
 from Password_Manager.User._master_encryption import passwordHasher
 import os
 import json
 import subprocess
+import shutil
+
+def warning():
+    config_file = "Password_Manager/Config/config.json"
+    if os.path.exists(config_file):
+        with open(config_file, "r") as config_file:
+            installation = json.load(config_file)['Installation']
+    else:
+        installation = False
+
+    if installation:
+        print("\n[-] It Seem Your Installation Is Already Done. If You Reinstall iThACK PassMag Then You Will Lost All Your Password.")
+        choice = input("[+] Do You Still Wanna To Reinstall? (y/n): ")
+        if choice == "n" or choice == "no":
+            exit()
+        elif choice == "y" or choice == "yes":
+            remove_tree()
+        else:
+            print("\nInvalid Input. Process Canceled !")
+
+def remove_tree():
+    remove_trees = ("Password_Manager/Config", "Password_Manager/config.json", 
+                    "Password_Manager/User/leveldb", "Password_Manager/User/masterlevel")
+    for location in remove_trees: shutil.rmtree(location, ignore_errors=True)
 
 if __name__ == '__main__':
-    configFolder = "Password_Manager/Config"
-    if not os.path.exists(configFolder):
-        os.mkdir(configFolder)
+    warning()
 
-    configFile = "Password_Manager/config.json"
-    if not os.path.exists(configFile):
-        create_database()
-        passwordHasher("don't use weak master password")
+    try:
+        os.mkdir("Password_Manager/Config")
+    except: pass
 
-        data = {
-            'Installation': True,
-            'Automatic Backup': False,
-            'Automatic Cloud Backup': False,
-            'User Preferred Local Backup': False,
-        }
-        with open("Password_Manager/config.json", "w") as config_file:
-            json.dump(data, config_file)
-    else:
-        with open("Password_Manager/config.json", "r") as config_file:
-            isAutoBackupAllowed = json.load(config_file)['Installation']
+    create_database()
+    passwordHasher("don't use weak master password")
 
-        if isAutoBackupAllowed:
-            print("\niThACK PassMag is already installed in your system.\n")
-            exit()
+    data = {
+        'Installation': True,
+        'Automatic Backup': False,
+        'Automatic Cloud Backup': False,
+        'User Preferred Local Backup': False,
+    }
+    with open("Password_Manager/Config/config.json", "w") as config_file:
+        json.dump(data, config_file)
 
     subprocess.check_call(['python', '-m', 'pip', 'install', '-r', 'requirements.txt'])
 
-    print("\n🤞🤞🤞👌👌👌 Woo Hoo Installation Complete Successfully 🐱‍💻🐱‍🐉🐱‍🚀🎁🎏🔑\n")
+    print("""    
+ ____________________________________________
+< Woo Hoo Installation Complete Successfully >
+ --------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\\
+                ||------| \\
+                ||     ||
+
+    """)
