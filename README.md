@@ -7,11 +7,11 @@ iThACK PassMag is a Python-based CLI Password Manager. That Uses Strong Encrypti
 
 # Installation
 
-## Windows Installation
+### Windows Installation
 1. Run ```python _setup.py```
 2. To Start iThACK PassMag - Run ```python _pw_manager.py```
 
-## Linux Installation (Debian / Ubuntu)
+### Linux Installation (Debian / Ubuntu)
 1. Run ```sudo apt-get install python3-tk```
 2. Then To Install Dependencies, ```python _setup.py```
 3. To Start iThACK PassMag - Run ```python _pw_manager.py```
@@ -20,11 +20,11 @@ iThACK PassMag is a Python-based CLI Password Manager. That Uses Strong Encrypti
 
 If You Don't Wanna Install Dependencies Then Just Run `python _pw_manager.py` To Run Application, Step Below For That 👇️
 
-## Windows Installation
+### Windows Installation
 1. Run ```. venv/bin/Activate.ps1```
 2. To Start iThACK PassMag - Run ```python _pw_manager.py```
 
-## Linux Installation (Debian / Ubuntu)
+### Linux Installation (Debian / Ubuntu)
 1. Run ```sudo apt-get install python3-tk```
 2. Then To Install Dependencies, ```. venv/bin/activate``` or ```source venv/bin/activate```
 3. To Start iThACK PassMag - Run ```python _pw_manager.py```
