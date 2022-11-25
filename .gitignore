@@ -1,7 +1,3 @@
-__pycache__
-leveldb
-masterlevel
-config.json
-cloud_cred.json
-ProjectCopier.py
-test.py
+__pycache__/*
+venv/*
+.idea/*
