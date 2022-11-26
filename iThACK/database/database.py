@@ -1,13 +1,23 @@
 import sqlite3
+from functools import singledispatchmethod
 from typing import List, Tuple
 
 from iThACK.database import DATABASE
+from iThACK.template import Account
+from iThACK.utils import attrs
 
 
 class Database:
+    @singledispatchmethod
     def __init__(self):
         self.conn = sqlite3.connect(DATABASE)
         self.cursor = self.conn.cursor()
+
+    @__init__.register(Account)
+    def _from(self, account):
+        self.conn = sqlite3.connect(DATABASE)
+        self.cursor = self.conn.cursor()
+        self.account = account
 
     def __del__(self):
         self.conn.close()
@@ -24,14 +34,14 @@ class Database:
         self.cursor.execute(table_schema)
         self.conn.commit()
 
-    def insert(self, account):
+    def create(self):
         query = """
         INSERT INTO accounts (
-        id, site, username, url
-        ) VALUES (?, ?, ?, ?)
+        site, username, url
+        ) VALUES (?, ?, ?)
         """
 
-        self.cursor.execute(query, account.get())
+        self.cursor.execute(query, attrs(self.account)[1:])
         self.conn.commit()
 
     def read(self) -> List[Tuple]:
@@ -39,3 +49,8 @@ class Database:
         self.cursor.execute(query)
         accounts = self.cursor.fetchall()
         return accounts
+
+    def delete(self) -> None:
+        query = "DELETE FROM accounts WHERE id = ?"
+        self.cursor.execute(query, (self.account.acc_id,))
+        self.conn.commit()
