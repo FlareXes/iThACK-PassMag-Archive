@@ -1,5 +1,4 @@
 import sqlite3
-from functools import singledispatchmethod
 from typing import List, Tuple
 
 from iThACK.database import DATABASE
@@ -8,16 +7,14 @@ from iThACK.utils import attrs
 
 
 class Database:
-    @singledispatchmethod
-    def __init__(self):
-        self.conn = sqlite3.connect(DATABASE)
-        self.cursor = self.conn.cursor()
-
-    @__init__.register(Account)
-    def _from(self, account):
-        self.conn = sqlite3.connect(DATABASE)
-        self.cursor = self.conn.cursor()
-        self.account = account
+    def __init__(self, account: Account = None):
+        if account is None:
+            self.conn = sqlite3.connect(DATABASE)
+            self.cursor = self.conn.cursor()
+        else:
+            self.conn = sqlite3.connect(DATABASE)
+            self.cursor = self.conn.cursor()
+            self.account = account
 
     def __del__(self):
         self.conn.close()
@@ -34,6 +31,13 @@ class Database:
         self.cursor.execute(table_schema)
         self.conn.commit()
 
+    @property
+    def read(self) -> List[Tuple]:
+        query = "SELECT * FROM accounts"
+        self.cursor.execute(query)
+        accounts = self.cursor.fetchall()
+        return accounts
+
     def create(self):
         query = """
         INSERT INTO accounts (
@@ -44,13 +48,22 @@ class Database:
         self.cursor.execute(query, attrs(self.account)[1:])
         self.conn.commit()
 
-    def read(self) -> List[Tuple]:
-        query = "SELECT * FROM accounts"
-        self.cursor.execute(query)
-        accounts = self.cursor.fetchall()
-        return accounts
-
     def delete(self) -> None:
         query = "DELETE FROM accounts WHERE id = ?"
         self.cursor.execute(query, (self.account.acc_id,))
         self.conn.commit()
+
+
+class Filter:
+    def __init__(self):
+        self.conn = sqlite3.connect(DATABASE)
+        self.cursor = self.conn.cursor()
+
+    def __del__(self):
+        self.conn.close()
+
+    def select(self, _id: int) -> Account:
+        query = "SELECT * FROM accounts WHERE id = ?"
+        self.cursor.execute(query, (_id,))
+        account = self.cursor.fetchone()
+        return Account(*account)
