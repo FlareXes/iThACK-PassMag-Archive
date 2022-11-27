@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from rich.console import Console
 from rich.table import Table
 
@@ -10,8 +12,8 @@ class _Table:
         self.table.add_column("Username / E-Mail", justify="center", style="red", header_style="red")
         self.table.add_column("Url", justify="center", style="green", header_style="green")
 
-    def add_row(self, account):
-        self.table.add_row(*account.get_str_type())
+    def add_row(self, account: Tuple):
+        self.table.add_row(*account)
 
     def show_table(self):
         console = Console()
@@ -36,5 +38,6 @@ class Print:
 def tabulate(accounts):
     t = _Table()
     for account in accounts:
+        account = tuple(map(str, account))
         t.add_row(account)
     t.show_table()
