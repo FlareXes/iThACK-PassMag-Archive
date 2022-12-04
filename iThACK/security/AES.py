@@ -6,8 +6,8 @@ from iThACK.utils import attrs
 
 
 class AES256:
-    def __init__(self, master_password):
-        self.mp = master_password
+    def __init__(self, master_password_hash):
+        self.mp = master_password_hash
 
     def encrypt(self, data: str):
         data = data.encode("utf-8")
@@ -25,9 +25,3 @@ class AES256:
         cipher = AES.new(key, AES.MODE_GCM, nonce)
         data = cipher.decrypt_and_verify(ciphertext, tag).decode("utf-8")
         return data
-
-
-if __name__ == "__main__":
-    a = AES256("master").encrypt("Hello World!")
-    b = AES256("master").decrypt(a)
-    print(b)
