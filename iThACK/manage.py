@@ -1,4 +1,6 @@
 from iThACK.database.database import Database, Filter
+from iThACK.security import getpass
+from iThACK.security.utils import get_mp_hash
 from iThACK.template import Account
 from iThACK.ui.ui import tabulate
 
@@ -11,15 +13,11 @@ def select_account():
 
 
 def add_account():
+    mp_hash = get_mp_hash()
     site = input("Site: ")
     username = input("Username / E-Mail: ")
-    password = input("Password: ")
+    creds = getpass(mp_hash)
     url = input("URL: ")
 
-    acc = Account(0, site, username, url)
-    Database(acc).create()
-
-
-def delete_account():
-    account = select_account()
-    Database(account).delete()
+    account = Account(0, site, username, url)
+    Database(account, creds).create()
