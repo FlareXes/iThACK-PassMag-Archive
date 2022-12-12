@@ -1,7 +1,7 @@
 import sqlite3
 from typing import List, Tuple
 
-from iThACK.database import DATABASE
+from iThACK import DATABASE
 from iThACK.template import Account, CipherConfig
 from iThACK.utils import attrs
 
