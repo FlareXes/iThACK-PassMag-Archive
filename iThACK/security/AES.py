@@ -6,7 +6,7 @@ from iThACK.utils import attrs
 
 
 class AES256:
-    def __init__(self, master_password_hash):
+    def __init__(self, master_password_hash: bytes):
         self.mp = master_password_hash
 
     def encrypt(self, data: str):
