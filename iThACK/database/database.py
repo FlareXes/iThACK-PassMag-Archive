@@ -8,7 +8,7 @@ from iThACK.utils import attrs
 
 class Database:
     def __init__(self, account: Account = None, cipher_config: CipherConfig = None):
-        if account is None or cipher_config is None:
+        if account is None and cipher_config is None:
             self.conn = sqlite3.connect(DATABASE)
             self.cursor = self.conn.cursor()
         else:
@@ -86,8 +86,13 @@ class Filter:
     def __del__(self):
         self.conn.close()
 
-    def select(self, _id: int) -> Account:
-        query = "SELECT * FROM Accounts WHERE id = ?"
-        self.cursor.execute(query, (_id,))
+    def select(self, _id: int) -> Tuple[Account, CipherConfig]:
+        account_query = "SELECT * FROM Accounts WHERE id = ?"
+        self.cursor.execute(account_query, (_id,))
         account = self.cursor.fetchone()
-        return Account(*account)
+
+        cipher_query = "SELECT * FROM CipherStuff WHERE accountId = ?"
+        self.cursor.execute(cipher_query, (_id,))
+        cipher = self.cursor.fetchone()
+
+        return Account(*account), CipherConfig(*cipher[1:])

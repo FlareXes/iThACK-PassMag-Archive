@@ -1,6 +1,7 @@
 from typing import Tuple
 
 from rich.console import Console
+from rich.prompt import Confirm
 from rich.table import Table
 
 
@@ -35,6 +36,15 @@ class Print:
     def fail(text):
         console = Console()
         console.print(f"[bold red]{text}[/bold red]")
+
+
+class Input:
+    @staticmethod
+    def confirm() -> bool:
+        if Confirm.ask("[bold yellow]Are you sure?[/bold yellow]"):
+            return True
+        else:
+            return False
 
 
 def tabulate(accounts):
