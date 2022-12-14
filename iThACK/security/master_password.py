@@ -1,5 +1,4 @@
 import os.path
-from getpass import getpass
 from secrets import compare_digest
 from typing import Tuple
 
@@ -7,6 +6,7 @@ from Cryptodome.Hash.SHA256 import SHA256Hash
 
 from iThACK import LEVELDB_DIR
 from iThACK.security.utils import salt, kdf_scrypt
+from iThACK.ui import Input
 
 
 class MasterPassword:
@@ -36,13 +36,13 @@ class MasterPassword:
 
     def generate_new(self):
         _salt = salt(32)
-        tmp = SHA256Hash(getpass("Master Key: ").encode("utf-8")).digest()
+        tmp = SHA256Hash(Input.getpass("Master Key").encode("utf-8")).digest()
         key = kdf_scrypt(tmp, _salt)
         self._save(key, _salt)
 
     def authenticate(self):
         key, _salt = self._get()
-        tmp = SHA256Hash(getpass("Master Key: ").encode("utf-8")).digest()
+        tmp = SHA256Hash(Input.getpass("Master Key").encode("utf-8")).digest()
         new_key = kdf_scrypt(tmp, _salt)
 
         self.mp_hash = tmp

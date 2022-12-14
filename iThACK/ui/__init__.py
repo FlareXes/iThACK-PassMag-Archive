@@ -1,7 +1,7 @@
 from typing import Tuple
 
 from rich.console import Console
-from rich.prompt import Confirm
+from rich.prompt import Confirm, Prompt
 from rich.table import Table
 
 
@@ -45,6 +45,16 @@ class Input:
             return True
         else:
             return False
+
+    @staticmethod
+    def prompt() -> str:
+        ans = Prompt.ask(default=None)
+        return ans
+
+    @staticmethod
+    def getpass(prompt: str) -> str:
+        ans = Prompt.ask(f"[bold cyan]{prompt}[/bold cyan]", password=True, default=None)
+        return ans
 
 
 def tabulate(accounts):

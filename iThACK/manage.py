@@ -1,3 +1,5 @@
+import sys
+
 from iThACK.database.database import Database, Filter
 from iThACK.security import encrypt_password, AES256
 from iThACK.template import Account
@@ -6,8 +8,15 @@ from iThACK.ui import tabulate, Print, Input
 
 def select_account():
     tabulate(Database().read)
-    _id = int(input(": "))
-    return _id
+
+    while True:
+        _id = Input.prompt()
+        if _id.isdigit():
+            return int(_id)
+        elif _id == "q" or _id == "quit" or _id == "exit":
+            sys.exit(0)
+        else:
+            Print.fail("[  Invalid Option  ]\n")
 
 
 def add_account(mp_hash: bytes):

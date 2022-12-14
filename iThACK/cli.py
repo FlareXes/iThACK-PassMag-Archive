@@ -9,7 +9,7 @@ def process(argv, argc):
     if argc == 0:
         select_account()
 
-    if argv[0] == "add":
+    elif argv[0] == "add":
         add_account(mp_hash)
 
     elif argv[0] == "view":
