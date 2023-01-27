@@ -1,2 +1,2 @@
-rich~=12.6.0
+rich==13.2.0
 pycryptodomex~=3.16.0
