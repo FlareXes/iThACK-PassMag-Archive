@@ -47,12 +47,28 @@ class Database:
         self.cursor.execute(encryption_table_schema)
         self.conn.commit()
 
-    @property
-    def read(self) -> List[Tuple]:
-        query = "SELECT * FROM Accounts"
+    def read(self, *columns, accounts: bool = True, cc: bool = False, full: bool = False) -> List[Tuple]:
+        columns = ", ".join(columns)
+
+        if columns != "":
+            query = f"SELECT {columns} FROM Accounts JOIN CipherStuff ON Accounts.id=CipherStuff.accountId;"
+        else:
+            if full:
+                query = """
+                SELECT id, site, username, url, ciphertext, salt, tag, nonce FROM Accounts
+                JOIN CipherStuff ON Accounts.id=CipherStuff.accountId;
+                """
+
+            if accounts:
+                query = "SELECT * FROM Accounts"
+
+            if cc:
+                query = "SELECT * FROM CipherStuff"
+
         self.cursor.execute(query)
-        accounts = self.cursor.fetchall()
-        return accounts
+        res = self.cursor.fetchall()
+
+        return res
 
     def create(self):
         account_query = """

@@ -1,13 +1,14 @@
 import sys
 
 from iThACK.database.database import Database, Filter
-from iThACK.security import encrypt_password, AES256
+from iThACK.security import encrypt_password, AES256, pwned_accounts
 from iThACK.template import Account
 from iThACK.ui import tabulate, Print, Input
+from iThACK.utils import attrs
 
 
 def select_account():
-    tabulate(Database().read)
+    tabulate(Database().read(accounts=True))
 
     while True:
         _id = Input.prompt()
@@ -42,3 +43,14 @@ def view_password(_id, mp_hash):
     account, cc = Filter().select(_id)
     aes = AES256(mp_hash)
     print(aes.decrypt(cc))
+
+
+def check_breach(mp_hash):
+    pwned = pwned_accounts(mp_hash)
+    if len(pwned) > 0:
+        pwned_list = list(map(lambda account: attrs(account), pwned))
+        tabulate(pwned_list)
+        Print.fail(":( You Are Not Safe, These Accounts' Passwords Have Been Breached")
+        Print.fail("\tIf you've ever used it anywhere before, change it!")
+    else:
+        Print.success(":) You're Safe, Passwords Haven't Been Breached")
