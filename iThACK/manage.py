@@ -3,7 +3,7 @@ import sys
 from iThACK.database.database import Database, Filter
 from iThACK.security import encrypt_password, AES256, pwned_accounts
 from iThACK.template import Account
-from iThACK.ui import tabulate, Print, Input
+from iThACK.ui import tabulate, Print, Input, get_mode
 from iThACK.utils import attrs
 
 
@@ -11,13 +11,13 @@ def select_account():
     tabulate(Database().read(accounts=True))
 
     while True:
-        _id = Input.prompt()
+        _id = Input.prompt(f"\n[bold bright_yellow]{get_mode()}[/bold bright_yellow]")
         if _id.isdigit():
             return int(_id)
         elif _id == "q" or _id == "quit" or _id == "exit":
             sys.exit(0)
         else:
-            Print.fail("[  Invalid Option  ]\n")
+            Print.fail("[  Invalid Option  ]")
 
 
 def add_account(mp_hash: bytes):
