@@ -1,4 +1,5 @@
 import sys
+import pyperclip
 
 from iThACK.database.database import Database, Filter
 from iThACK.security import encrypt_password, AES256, pwned_accounts
@@ -6,16 +7,25 @@ from iThACK.template import Account
 from iThACK.ui import tabulate, Print, Input, get_mode
 from iThACK.utils import attrs
 
+PROMPT_PASSWORD = False
+
 
 def select_account():
-    tabulate(Database().read(accounts=True))
-
     while True:
         _id = Input.prompt(f"\n[bold bright_yellow]{get_mode()}[/bold bright_yellow]")
         if _id.isdigit():
             return int(_id)
+
+        elif _id == "p":
+            global PROMPT_PASSWORD
+            PROMPT_PASSWORD = not PROMPT_PASSWORD
+
+        elif _id == "v":
+            tabulate(Database().read(accounts=True))
+
         elif _id == "q" or _id == "quit" or _id == "exit":
             sys.exit(0)
+
         else:
             Print.fail("[  Invalid Option  ]")
 
@@ -42,7 +52,12 @@ def delete_account(_id):
 def view_password(_id, mp_hash):
     account, cc = Filter().select(_id)
     aes = AES256(mp_hash)
-    print(aes.decrypt(cc))
+    if PROMPT_PASSWORD:
+        Print.fail(aes.decrypt(cc))
+        pyperclip.copy(aes.decrypt(cc))
+    else:
+        pyperclip.copy(aes.decrypt(cc))
+        Print.success("Copied To Clipboard !!")
 
 
 def check_breach(mp_hash):
