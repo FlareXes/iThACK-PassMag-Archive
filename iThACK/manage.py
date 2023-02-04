@@ -49,8 +49,13 @@ def delete_account(_id):
         Print.fail("[-] Account Removed")
 
 
-def view_password(_id, mp_hash):
-    account, cc = Filter().select(_id)
+def view_password(_id, mp_hash) -> None:
+    try:
+        account, cc = Filter().select(_id)
+    except TypeError:
+        Print.fail("[  Invalid Account  ]")
+        return None
+
     aes = AES256(mp_hash)
     if PROMPT_PASSWORD:
         Print.fail(aes.decrypt(cc))
