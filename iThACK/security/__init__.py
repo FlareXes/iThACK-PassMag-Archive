@@ -18,13 +18,13 @@ def encrypt_password(mp_hash: bytes):
 
 def login():
     mp = MasterPassword()
-    for i in range(3):
+    for _ in range(3):
         trust = mp.authenticate()
         if trust:
             return mp.mp_hash
-    else:
-        Print.fail(">>>  Failed: Too many invalid attempts  <<<")
-        sys.exit(1)
+   
+    Print.fail(">>>  Failed: Too many invalid attempts  <<<")
+    sys.exit(1)
 
 
 def pwned_accounts(mp_hash: bytes):

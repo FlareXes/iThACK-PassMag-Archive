@@ -7,7 +7,7 @@ mp_hash = login()
 
 
 def process(argv, argc):
-    if argc == 0:
+    if argc == 0 or argv[0] == "view":
         set_mode("View Mode")
         tabulate(Database().read(accounts=True))
 
@@ -19,13 +19,6 @@ def process(argv, argc):
         set_mode("Add Mode")
         add_account(mp_hash)
 
-    elif argv[0] == "view":
-        set_mode("View Mode")
-        tabulate(Database().read(accounts=True))
-
-        while True:
-            _id = select_account()
-            view_password(_id, mp_hash)
 
     elif argv[0] == "remove":
         set_mode("Remove Mode")

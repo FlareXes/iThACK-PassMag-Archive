@@ -70,12 +70,12 @@ class Input:
 
     @staticmethod
     def prompt(prompt: str) -> str:
-        ans = Prompt.ask(prompt, default=None)
+        ans = Prompt.ask(prompt)
         return ans
 
     @staticmethod
     def getpass(prompt: str) -> str:
-        ans = Prompt.ask(f"[bold cyan]{prompt}[/bold cyan]", password=True, default=None)
+        ans = Prompt.ask(f"[bold cyan]{prompt}[/bold cyan]", password=True)
         return ans
 
 
